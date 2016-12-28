@@ -1,0 +1,4 @@
+{
+	"places": ["debian","screen_is_not_installed"],
+	"works": ["screen_package"]
+}
