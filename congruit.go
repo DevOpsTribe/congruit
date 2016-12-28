@@ -82,11 +82,11 @@ func main() {
 
 				log.Printf("Loading workplaces...")
 
-				workplaces, _ := ioutil.ReadDir("legion/workplaces")
+				workplaces, _ := ioutil.ReadDir("legion/workplaces_enabled")
 				for _, wp := range workplaces {
 					log.Printf("Found workplace: " + wp.Name())
 
-					file, _ := os.Open("legion/workplaces/" + wp.Name())
+					file, _ := os.Open("legion/workplaces_enabled/" + wp.Name())
 					decoder := json.NewDecoder(file)
 					configuration := WorkplaceConfigurationJson{}
 					err := decoder.Decode(&configuration)
