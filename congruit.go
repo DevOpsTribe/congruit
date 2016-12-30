@@ -38,7 +38,7 @@ func main() {
 		os.Mkdir("/tmp/congruit_temp", 700)
 	}
 
-	files, err = ioutil.ReadDir("./legion")
+	files, err = ioutil.ReadDir("./stockroom")
 
 	if err != nil {
 		log.Fatal(err)
@@ -53,12 +53,12 @@ func main() {
 
 				log.Printf("Loading places...")
 
-				places, _ := ioutil.ReadDir("legion/places")
+				places, _ := ioutil.ReadDir("stockroom/places")
 				for _, p := range places {
 					log.Printf("Found place: " + p.Name())
 					thisplace := new(congruit.Place)
 					thisplace.Name = p.Name()
-					content1, _ := ioutil.ReadFile("legion/places/" + p.Name())
+					content1, _ := ioutil.ReadFile("stockroom/places/" + p.Name())
 					thisplace.Command = string(content1)
 					places_ptr = append(places_ptr, thisplace)
 
@@ -68,12 +68,12 @@ func main() {
 
 				log.Printf("Loading works...")
 
-				works, _ := ioutil.ReadDir("legion/works")
+				works, _ := ioutil.ReadDir("stockroom/works")
 				for _, w := range works {
 					log.Printf("Found work: " + w.Name())
 					thiswork := new(congruit.Work)
 					thiswork.Name = w.Name()
-					content2, _ := ioutil.ReadFile("legion/works/" + w.Name())
+					content2, _ := ioutil.ReadFile("stockroom/works/" + w.Name())
 					thiswork.Command = string(content2)
 					works_ptr = append(works_ptr, thiswork)
 				}
@@ -82,11 +82,11 @@ func main() {
 
 				log.Printf("Loading workplaces...")
 
-				workplaces, _ := ioutil.ReadDir("legion/workplaces_enabled")
+				workplaces, _ := ioutil.ReadDir("stockroom/workplaces_enabled")
 				for _, wp := range workplaces {
 					log.Printf("Found workplace: " + wp.Name())
 
-					file, _ := os.Open("legion/workplaces_enabled/" + wp.Name())
+					file, _ := os.Open("stockroom/workplaces_enabled/" + wp.Name())
 					decoder := json.NewDecoder(file)
 					configuration := WorkplaceConfigurationJson{}
 					err := decoder.Decode(&configuration)
@@ -105,11 +105,20 @@ func main() {
 	}
 
 	var command string
-	log.Printf("*****************************************")
-	log.Printf("*****************************************")
-	log.Printf("Going to apply workplaces")
-	log.Printf("*****************************************")
-	log.Printf("*****************************************")
+
+  if len(workplaces_ptr) == 0 {
+
+  	log.Printf("There are no workplaces to apply... Doing nothing...")
+
+  }else{
+
+		log.Printf("*****************************************")
+		log.Printf("*****************************************")
+		log.Printf("Going to apply workplaces")
+		log.Printf("*****************************************")
+		log.Printf("*****************************************")
+
+  }
 
 	for i := range workplaces_ptr {
 		goodplace = true
