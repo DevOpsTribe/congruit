@@ -10,40 +10,49 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
-
+  "flag"
 	"./congruit-go/libs"
 )
 
 type WorkplaceConfigurationJson struct {
-		Places []string
-		Works  []string
+	Places []string
+	Works  []string
 }
 
 func main() {
 
-	log.Printf("*****************************************")
-	log.Printf("*****************************************")
-	log.Printf("Thank you for use Congruit!							 ")
-	log.Printf("*****************************************")
-	log.Printf("*****************************************")
+	const version string = "1.0.0"
+
+	StockRoomDir := flag.String("stockroom-dir", "./", "stockroom directory")
+	CongruitVersion := flag.Bool("version", false, "show version")
+  Debug := flag.Bool("debug", false, "print more logs")
+  ExecutedWorks := 0
+
+	flag.Parse()
+
+	fmt.Printf("                         _ _   \n")
+	fmt.Printf(" ___ ___ ___ ___ ___ _ _|_| |_ \n")
+	fmt.Printf("|  _| . |   | . |  _| | | |  _|\n")
+	fmt.Printf("|___|___|_|_|_  |_| |___|_|_|  \n")
+	fmt.Printf("            |___|              \n")
+	fmt.Println("Version:",version,"\n")
+
+	if (*CongruitVersion){
+		return
+	}
 
 	works_ptr := []*congruit.Work{}
 	workplaces_ptr := []*congruit.WorkPlace{}
 	places_ptr := []*congruit.Place{}
 
-	files, err := ioutil.ReadDir("/tmp/congruit_temp")
-
 	var goodplace bool
 
-	if err != nil {
-		os.Mkdir("/tmp/congruit_temp", 700)
-	}
-
-	files, err = ioutil.ReadDir("./stockroom")
+	files, err := ioutil.ReadDir(*StockRoomDir)
 
 	if err != nil {
 		log.Fatal(err)
 	}
+
 
 	for _, file := range files {
 
@@ -54,8 +63,10 @@ func main() {
 				log.Printf("Loading places...")
 
 				places, _ := ioutil.ReadDir("stockroom/places")
+
 				for _, p := range places {
-					log.Printf("Found place: " + p.Name())
+
+					if(*Debug){log.Printf("Found place: " + p.Name())}
 					thisplace := new(congruit.Place)
 					thisplace.Name = p.Name()
 					content1, _ := ioutil.ReadFile("stockroom/places/" + p.Name())
@@ -69,13 +80,16 @@ func main() {
 				log.Printf("Loading works...")
 
 				works, _ := ioutil.ReadDir("stockroom/works")
+
 				for _, w := range works {
-					log.Printf("Found work: " + w.Name())
+
+					if(*Debug){log.Printf("Found work: " + w.Name())}
 					thiswork := new(congruit.Work)
 					thiswork.Name = w.Name()
 					content2, _ := ioutil.ReadFile("stockroom/works/" + w.Name())
 					thiswork.Command = string(content2)
 					works_ptr = append(works_ptr, thiswork)
+
 				}
 
 			} else if strings.EqualFold(file.Name(), "workplaces") {
@@ -83,42 +97,39 @@ func main() {
 				log.Printf("Loading workplaces...")
 
 				workplaces, _ := ioutil.ReadDir("stockroom/workplaces_enabled")
+
 				for _, wp := range workplaces {
-					log.Printf("Found workplace: " + wp.Name())
+
+					if(*Debug){log.Printf("Found workplace: " + wp.Name())}
 
 					file, _ := os.Open("stockroom/workplaces_enabled/" + wp.Name())
 					decoder := json.NewDecoder(file)
 
+					_, err := decoder.Token()
+					if err != nil {
+						log.Fatal(err)
+					}
 
-					//configuration := WorkplaceConfigurationJson{}
+					//fmt.Printf("%T: %v\n", t, t)
+					cnt := 1
 
-		// read open bracket
-   		t, err := decoder.Token()
-   		if err != nil {
-   			log.Fatal(err)
-   	  }
+					for decoder.More() {
 
-   	  	fmt.Printf("%T: %v\n", t, t)
-   	  	cnt := 1
-		// while the array contains values
-   		for decoder.More() {
-				configuration := WorkplaceConfigurationJson{}
+						configuration := WorkplaceConfigurationJson{}
 
-   			// decode an array value (Message)
-   			err := decoder.Decode(&configuration)
-   			if err != nil {
-   				log.Fatal(err)
-   			}
+						err := decoder.Decode(&configuration)
+							if err != nil {
+							log.Fatal(err)
+						}
 
-   					thisworkplace := new(congruit.WorkPlace)
+						thisworkplace := new(congruit.WorkPlace)
 						thisworkplace.Name = wp.Name() + "@"  + strconv.Itoa(cnt)
 						thisworkplace.Works = configuration.Works
 						thisworkplace.Places = configuration.Places
 						log.Printf("Loading workplace: " + wp.Name() + "@"  + strconv.Itoa(cnt))
 						workplaces_ptr = append(workplaces_ptr, thisworkplace)
-            cnt = cnt + 1
-
-   		}
+						cnt = cnt + 1
+					}
 				}
 			}
 		}
@@ -126,78 +137,92 @@ func main() {
 
 	var command string
 
-  if len(workplaces_ptr) == 0 {
+	if len(workplaces_ptr) == 0 {
 
-  	log.Printf("There are no workplaces to apply... Doing nothing...")
+		log.Printf("There are no workplaces to apply... Doing nothing...")
 
-  }else{
+	}else{
 
-		log.Printf("*****************************************")
-		log.Printf("*****************************************")
-		log.Printf("Going to apply workplaces")
-		log.Printf("*****************************************")
-		log.Printf("*****************************************")
+		log.Printf("\n *** \n Going to apply workplaces \n *** \n")
 
-  }
+	}
 
 	for i := range workplaces_ptr {
+
 		goodplace = true
 		workplace := workplaces_ptr[i]
 		log.Printf("Workplace: " + workplace.Name)
-		log.Printf("Checking all places")
+
+		log.Printf("Checking places...")
+
 		for k := range workplace.Places {
+
 			z := workplace.Places[k]
-			log.Printf("Place: " + z)
+			log.Printf("Testing Place: " + z)
 
-			for p := range places_ptr {
-				place := places_ptr[p]
+				for p := range places_ptr {
 
-				if strings.EqualFold(z, place.Name) {
-					command = place.Command
+					place := places_ptr[p]
+
+					if strings.EqualFold(z, place.Name) {
+						command = place.Command
+					}
+
 				}
 
-			}
+			if(*Debug){log.Printf("Executing Place:\n" + command)}
 
-			log.Printf("Executing Place:\n" + command)
 			cmd := exec.Command("bash", "-c", command)
 			var out bytes.Buffer
 			cmd.Stdout = &out
 			err := cmd.Run()
+
 			if err != nil {
 				goodplace = false
 				break
 			}
-			log.Printf(out.String())
+
+			if(*Debug){log.Printf("Place execution output: " + out.String())}
 		}
 
 		command = ""
+
 		if goodplace == true {
-			log.Printf("Your place is good! I can do works")
 
+			for k := range workplace.Works {
+				j := workplace.Works[k]
 
-   		for k := range workplace.Works {
-			j := workplace.Works[k]
-			for w := range works_ptr {
-				work := works_ptr[w]
-				if strings.EqualFold(j, work.Name) {
-					command = work.Command
+				for w := range works_ptr {
+
+					work := works_ptr[w]
+
+					if strings.EqualFold(j, work.Name) {
+						command = work.Command
+					}
 				}
+
+				log.Printf("Executing Work:\n" + command)
+
+				cmd := exec.Command("bash", "-c", command)
+				var out bytes.Buffer
+				cmd.Stdout = &out
+				err := cmd.Run()
+
+				ExecutedWorks = ExecutedWorks  + 1
+
+				if err != nil {
+
+				}
+				log.Printf(out.String())
 			}
-			log.Printf("Executing Work:\n" + command)
-			cmd := exec.Command("bash", "-c", command)
-			var out bytes.Buffer
-			cmd.Stdout = &out
-			err := cmd.Run()
-			if err != nil {
-
-			}
-			log.Printf(out.String())}
-
-
-
 
 		} else {
-			log.Printf("Your place is NOT good! I cannot this works for the workplace " + workplace.Name)
+
+			if(*Debug){log.Printf("The workplace " + workplace.Name + " not needed here!")}
+
 		}
 	}
+
+	log.Printf("Extecuted works: " + strconv.Itoa(ExecutedWorks) )
+
 }
