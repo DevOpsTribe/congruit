@@ -7,19 +7,19 @@
 
 **[Description](#description)**
 
-**[Concepts](#Concepts)**
+**[Concepts](#concepts)**
 
-**[Stockroom](#Stockroom)**
+**[Stockroom](#stockroom)**
 
-**[Place](#Place)**
+**[Place](#place)**
 
-**[Work](#Work)**
+**[Work](#work)**
 
-**[Workplace](#Workplace)**
+**[Workplace](#workplace)**
 
-**[Prerequisites](#Prerequisites)**
+**[Prerequisites](#prerequisites)**
 
-**[Usage](#Usage)**
+**[Usage](#usage)**
 
 ## Description
 Congruit is a configuration a lightweight configuration management and automation tool. It is written in Go and works through Bash. It manages shell scripts you created for configure your Linux platforms.
