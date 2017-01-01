@@ -1,7 +1,7 @@
 ## Congruit
 
 ### The configuration management tool that loves Bash
-#### Simple, and lightweight and fully customizable by you
+#### Simple, lightweight and fully customizable by you
 
 ### Table of Contents
 
@@ -36,7 +36,7 @@ The main concepts of Congruit are
 The Stockroom are the main repository that describes your platform. Congruit reads the stockroom and does things
 
 ## Places
-A place is a shell script that must return 0. This means that you are in the right place to do a work.
+A place is a shell script that must return 0. You should be in a right place to do a work.
 Example:
 
 Is this Linux server a Centos 7?
@@ -45,7 +45,6 @@ Is this Linux server a Centos 7?
 [ ! -e /etc/redhat-release ] && exit 1
 cat /etc/redhat-release | grep "Centos Linux release 7.*"
 ```
-It is nothing of new. They are two lines of shell script
 
 ## Works
 Works are sheel script that install and configre programs or run Docker containers like in the following example:
@@ -71,7 +70,7 @@ Example:
   }
 ]
 ```
-in the following example, the workplace will take care to decide which is the best strategy for install Screen.
+in the following example, the workplace will take care to decide which is the correct strategy for install Screen.
 Congruit will execute places and, if they will return 0, do works.
 
 ## Prerequisites
