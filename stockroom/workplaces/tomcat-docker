@@ -1,4 +1,10 @@
-{
-  "places": ["everywhere","docker_tomcat_is_not_running"],
-  "works": ["run_tomcat_docker"]
-}
+[
+  {
+    "places": ["centos7","docker_tomcat_is_not_running"],
+    "works": ["docker_package_yum"]
+  },
+  {
+    "places": ["everywhere","docker_tomcat_is_not_running"],
+    "works": ["run_tomcat_docker"]
+  }
+]
