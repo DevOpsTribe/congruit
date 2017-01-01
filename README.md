@@ -17,7 +17,7 @@
 
 **[Workplace](#workplace)**
 
-**[Build your workplaces](#build-your-workplaces)
+**[Build your workplaces](#build-your-workplaces)**
 
 **[Prerequisites](#prerequisites)**
 
