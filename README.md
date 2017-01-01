@@ -5,7 +5,7 @@
 
 ### Table of Contents
 
-**[Description](##Description)**
+**[Description](#description)**
 
 **[Concepts](#Concepts)**
 
