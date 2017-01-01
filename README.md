@@ -92,13 +92,13 @@ Workplaces are array of hashes
 ```
 [
   {
-   "places": ["is_linux", "is_frontend"],
+   "places": ["is_linux", "is_frontend","is_apache_not_istalled"],
    "works": ["install_apache"]
   },
   
   {
    "places": ["is_linux", "is_frontend", "has_additionl_vhost"],
-   "works": ["additional_vhost"]
+   "works": ["additional_vhost","restart_apache"]
   },
   
   {
