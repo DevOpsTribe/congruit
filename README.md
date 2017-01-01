@@ -17,6 +17,8 @@
 
 **[Workplace](#workplace)**
 
+**[Build your workplaces](#build-your-workplaces)
+
 **[Prerequisites](#prerequisites)**
 
 **[Usage](#usage)**
@@ -72,6 +74,40 @@ Example:
 ```
 the workplace will take care to decide which is the correct strategy for install Screen.
 Congruit will execute places and, if they will return 0, do works.
+
+## Build you workplace
+1. Create or pull you stockroom
+
+2. You need to describe your places. Example:
+  * is this server running a specific Linux Distribution?
+  * are there particulare configuration files, software installed, environment variables that describe the role / functionality of this server?
+  * places are executed before works... You can inject create files with environment variables that works can use
+  Put places in stockroom/places/ folder
+ 
+3. Create works. Put the scripts in stockroom/works. Works do all things like install software, get configuration file from a repository ecc.. 
+  
+4. Crate workplaces in stockroom/workplaces. Try to make them usable in more environments and follow thi example:
+
+Workplaces are array of hashes
+```
+[
+  {
+   "places": ["is_linux", "is_frontend"],
+   "works": ["install_apache"]
+  },
+  
+  {
+   "places": ["is_linux", "is_frontend", "has_additionl_vhost"],
+   "works": ["additional_vhost"]
+  },
+  
+  {
+   "places": ["is_production"],
+   "works": ["do_backup"]
+  }
+
+]
+```
 
 ## Prerequisites
 1. GO
