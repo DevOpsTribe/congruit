@@ -10,8 +10,6 @@
 
 **[Description](#description)**
 
-**[Try Congruit with Vagrant](#try-conguit-with-vagrant)**
-
 **[Concepts](#concepts)**
 
 **[Stockroom](#stockroom)**
@@ -25,6 +23,8 @@
 **[Build your workplaces](#build-your-workplaces)**
 
 **[Prerequisites](#prerequisites)**
+
+**[Try Congruit With Vagrant](#try-congruit-with-vagrant)**
 
 **[Usage](#usage)**
 
