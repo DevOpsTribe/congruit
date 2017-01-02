@@ -40,7 +40,7 @@ The main concepts of Congruit are
 * Workplaces
 
 ## Stockroom
-The Stockroom is the main repository that describes your platform. Congruit reads the stockroom and does things
+The Stockroom is the main repository that describes your platform. Congruit reads the stockroom and does things.
 
 ## Place
 A place is a shell script that must return 0. You should be in a right place to do a work.
@@ -61,7 +61,7 @@ docker run --rm -p 8888:8080 tomcat:latest &> /dev/null &
 ```
 
 ## Workplace
-The workplaces are the union between works and places and are Json file.
+Workplaces are the union between works and places and are JSON file.
 
 Example:
 
@@ -77,16 +77,16 @@ Example:
   }
 ]
 ```
-the workplace takes care to decide which is the correct strategy for install Screen.
-Congruit executes places and, if they returns 0, does works.
+the workplace is able to decide which is the correct strategy to install software.
+Congruit executes places and, if they return 0, it does works.
 
 ## Build you workplace
-1. Create your stockroom. I would like create a public repository with commons and useful workplaces. For now you can take a look as example at https://github.com/lucky-sideburn/congruit/tree/master/stockroom
+1. Create your stockroom. I would like create a public repository with common and useful workplaces. For now you can take a look at https://github.com/lucky-sideburn/congruit/tree/master/stockroom
 
 2. You need to describe your places. Example:
-  * is this server running a specific Linux Distribution?
-  * are there particular configuration files, software installed, environment variables that describe the role / functionality of this server?
-  * places are executed before works... You can inject files with environment variables that can be used by works.
+  * is this server running a specific Linux distribution?
+  * are there particular configuration files, installed software, environment variables that describe the role or the functionality of this server?
+  * places are executed before works... You can copy files which contain environment variables that can be used by works.
   Put places in stockroom/places/ folder
 
 3. Create works. Put the scripts in stockroom/works. Works install software, get configuration file from a repository, manage Docker containers ecc..
