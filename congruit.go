@@ -1,8 +1,10 @@
 package main
 
 import (
+	"./congruit-go/libs"
 	"bytes"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -10,8 +12,6 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
-  "flag"
-	"./congruit-go/libs"
 )
 
 type WorkplaceConfigurationJson struct {
@@ -25,8 +25,8 @@ func main() {
 
 	StockRoomDir := flag.String("stockroom-dir", "./", "stockroom directory")
 	CongruitVersion := flag.Bool("version", false, "show version")
-  Debug := flag.Bool("debug", false, "print more logs")
-  ExecutedWorks := 0
+	Debug := flag.Bool("debug", false, "print more logs")
+	ExecutedWorks := 0
 
 	flag.Parse()
 
@@ -35,9 +35,9 @@ func main() {
 	fmt.Printf("|  _| . |   | . |  _| | | |  _|\n")
 	fmt.Printf("|___|___|_|_|_  |_| |___|_|_|  \n")
 	fmt.Printf("            |___|              \n")
-	fmt.Println("Version:",version,"\n")
+	fmt.Println("Version:", version, "\n")
 
-	if (*CongruitVersion){
+	if *CongruitVersion {
 		return
 	}
 
@@ -53,7 +53,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-
 	for _, file := range files {
 
 		if file.IsDir() {
@@ -66,7 +65,9 @@ func main() {
 
 				for _, p := range places {
 
-					if(*Debug){log.Printf("Found place: " + p.Name())}
+					if *Debug {
+						log.Printf("Found place: " + p.Name())
+					}
 					thisplace := new(congruit.Place)
 					thisplace.Name = p.Name()
 					content1, _ := ioutil.ReadFile("stockroom/places/" + p.Name())
@@ -83,7 +84,9 @@ func main() {
 
 				for _, w := range works {
 
-					if(*Debug){log.Printf("Found work: " + w.Name())}
+					if *Debug {
+						log.Printf("Found work: " + w.Name())
+					}
 					thiswork := new(congruit.Work)
 					thiswork.Name = w.Name()
 					content2, _ := ioutil.ReadFile("stockroom/works/" + w.Name())
@@ -100,7 +103,9 @@ func main() {
 
 				for _, wp := range workplaces {
 
-					if(*Debug){log.Printf("Found workplace: " + wp.Name())}
+					if *Debug {
+						log.Printf("Found workplace: " + wp.Name())
+					}
 
 					file, _ := os.Open("stockroom/workplaces_enabled/" + wp.Name())
 					decoder := json.NewDecoder(file)
@@ -118,15 +123,15 @@ func main() {
 						configuration := WorkplaceConfigurationJson{}
 
 						err := decoder.Decode(&configuration)
-							if err != nil {
+						if err != nil {
 							log.Fatal(err)
 						}
 
 						thisworkplace := new(congruit.WorkPlace)
-						thisworkplace.Name = wp.Name() + "@"  + strconv.Itoa(cnt)
+						thisworkplace.Name = wp.Name() + "@" + strconv.Itoa(cnt)
 						thisworkplace.Works = configuration.Works
 						thisworkplace.Places = configuration.Places
-						log.Printf("Loading workplace: " + wp.Name() + "@"  + strconv.Itoa(cnt))
+						log.Printf("Loading workplace: " + wp.Name() + "@" + strconv.Itoa(cnt))
 						workplaces_ptr = append(workplaces_ptr, thisworkplace)
 						cnt = cnt + 1
 					}
@@ -141,7 +146,7 @@ func main() {
 
 		log.Printf("There are no workplaces to apply... Doing nothing...")
 
-	}else{
+	} else {
 
 		log.Printf("\n *** \n Going to apply workplaces \n *** \n")
 
@@ -160,17 +165,19 @@ func main() {
 			z := workplace.Places[k]
 			log.Printf("Testing Place: " + z)
 
-				for p := range places_ptr {
+			for p := range places_ptr {
 
-					place := places_ptr[p]
+				place := places_ptr[p]
 
-					if strings.EqualFold(z, place.Name) {
-						command = place.Command
-					}
-
+				if strings.EqualFold(z, place.Name) {
+					command = place.Command
 				}
 
-			if(*Debug){log.Printf("Executing Place:\n" + command)}
+			}
+
+			if *Debug {
+				log.Printf("Executing Place:\n" + command)
+			}
 
 			cmd := exec.Command("bash", "-c", command)
 			var out bytes.Buffer
@@ -182,7 +189,9 @@ func main() {
 				break
 			}
 
-			if(*Debug){log.Printf("Place execution output: " + out.String())}
+			if *Debug {
+				log.Printf("Place execution output: " + out.String())
+			}
 		}
 
 		command = ""
@@ -208,7 +217,7 @@ func main() {
 				cmd.Stdout = &out
 				err := cmd.Run()
 
-				ExecutedWorks = ExecutedWorks  + 1
+				ExecutedWorks = ExecutedWorks + 1
 
 				if err != nil {
 
@@ -218,11 +227,13 @@ func main() {
 
 		} else {
 
-			if(*Debug){log.Printf("The workplace " + workplace.Name + " not needed here!")}
+			if *Debug {
+				log.Printf("The workplace " + workplace.Name + " not needed here!")
+			}
 
 		}
 	}
 
-	log.Printf("Extecuted works: " + strconv.Itoa(ExecutedWorks) )
+	log.Printf("Extecuted works: " + strconv.Itoa(ExecutedWorks))
 
 }
