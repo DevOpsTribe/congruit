@@ -31,26 +31,6 @@
 ## Description
 Congruit is a lightweight configuration management and automation tool. It is written in Go but works through Bash. It manages shell scripts you created for configure your Linux platforms.
 
-## Try Congruit With Vagrant
-
-* List all virtual machine in current Vagrant project
-
-```
-eugenio@local:[~/WORK/GO/src/congruit]: vagrant status
-Current machine states:
-
-Centos7                   running (virtualbox)
-```
-
-* Provision and test your workplaces
-
-```
-export WORKPLACES_ENABLED=install_screen
-vagrant provision Centos7
-```
-
-Remember to set WORKPLACES_ENABLED (example: WORKPLACES_ENABLED=do_this,do_this2,do_foobar) in oder to execute workplaces
-
 ## Concepts
 The main concepts of Congruit are
 
@@ -133,6 +113,26 @@ Workplaces are array of hashes
 
 ]
 ```
+
+## Try Congruit With Vagrant
+
+* List all virtual machine in current Vagrant project
+
+```
+eugenio@local:[~/WORK/GO/src/congruit]: vagrant status
+Current machine states:
+
+Centos7                   running (virtualbox)
+```
+
+* Provision and test your workplaces
+
+```
+export WORKPLACES_ENABLED=install_screen
+vagrant provision Centos7
+```
+
+Remember to set WORKPLACES_ENABLED (example: WORKPLACES_ENABLED=do_this,do_this2,do_foobar) in oder to execute workplaces
 
 ## Prerequisites
 1. GO
