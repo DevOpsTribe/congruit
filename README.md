@@ -24,6 +24,8 @@
 
 **[Prerequisites](#prerequisites)**
 
+**[Try Congruit with Vagrant](#try-conguit-with-vagrant)**
+
 **[Usage](#usage)**
 
 ## Description
@@ -86,9 +88,9 @@ Congruit executes places and, if they returns 0, does works.
   * are there particular configuration files, software installed, environment variables that describe the role / functionality of this server?
   * places are executed before works... You can inject files with environment variables that can be used by works.
   Put places in stockroom/places/ folder
- 
-3. Create works. Put the scripts in stockroom/works. Works install software, get configuration file from a repository, manage Docker containers ecc.. 
-  
+
+3. Create works. Put the scripts in stockroom/works. Works install software, get configuration file from a repository, manage Docker containers ecc..
+
 4. Create workplaces in stockroom/workplaces. Try to make them usable in more environments and follow this example:
 
 Workplaces are array of hashes
@@ -98,12 +100,12 @@ Workplaces are array of hashes
    "places": ["is_linux", "is_frontend","is_apache_not_istalled"],
    "works": ["install_apache"]
   },
-  
+
   {
    "places": ["is_linux", "is_frontend", "has_additionl_vhost"],
    "works": ["additional_vhost","restart_apache"]
   },
-  
+
   {
    "places": ["is_production"],
    "works": ["do_backup"]
@@ -115,6 +117,25 @@ Workplaces are array of hashes
 ## Prerequisites
 1. GO
 2. a stockroom. You can take as example the stockroom present in this repo. Please, create symlink from stockroom/workplaces/foo to stockroom/workplaces_enabled/foo if you want apply the workplace "foo" during congruit execution
+
+## Try Congruit With Vagrant
+
+* Show available virtual machine in current Vagrant project
+
+```
+eugenio@local:[~/WORK/GO/src/congruit]: vagrant status
+Current machine states:
+
+Centos7                   running (virtualbox)
+```
+
+* Provision and test your workplaces
+
+```
+export WORKPLACES_ENABLED=install_screen
+vagrant provision Centos7
+```
+
 
 ## Usage
 1. `git clone https://github.com/lucky-sideburn/congruit.git`
