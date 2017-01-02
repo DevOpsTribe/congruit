@@ -103,7 +103,7 @@ func main() {
 
 				for _, wp := range workplaces {
 
-					if (strings.EqualFold(wp.Name(), "README.md") == false){
+					if strings.EqualFold(wp.Name(), "README.md") == false {
 						if *Debug {
 							log.Printf("Found workplace: " + wp.Name())
 						}
