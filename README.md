@@ -56,7 +56,7 @@ docker run --rm -p 8888:8080 tomcat:latest &> /dev/null &
 ```
 
 ## Workplace
-Workplace are the union between works and places and are Json file.
+The workplaces are the union between works and places and are Json file.
 
 Example:
 
@@ -72,7 +72,7 @@ Example:
   }
 ]
 ```
-the workplace will take care to decide which is the correct strategy for install Screen.
+the workplace takes care to decide which is the correct strategy for install Screen.
 Congruit executes places and, if they returns 0, does works.
 
 ## Build you workplace
