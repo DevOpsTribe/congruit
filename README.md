@@ -1,7 +1,6 @@
 ## Congruit
 
-![alt text](https://github.com/lucky-sideburn/congruit/blob/master/img/logo.png "Tux1")
-![alt text](https://github.com/lucky-sideburn/congruit/blob/master/img/logo.png "Tux2")
+![alt text](https://github.com/lucky-sideburn/congruit/blob/master/img/logo2.png "Tux2")
 
 ### The configuration management tool that loves Bash
 #### Simple, lightweight and fully customizable by you
