@@ -228,7 +228,7 @@ func main() {
 		} else {
 
 			if *Debug {
-				log.Printf("The workplace " + workplace.Name + " not needed here!")
+				log.Printf("Workplace " + workplace.Name + " not needed here!")
 			}
 
 		}
