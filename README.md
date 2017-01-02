@@ -79,17 +79,17 @@ the workplace takes care to decide which is the correct strategy for install Scr
 Congruit executes places and, if they returns 0, does works.
 
 ## Build you workplace
-1. Create your stockroom. I would like create a public repository with commons and useful workplaces. For now you can take a look as example to https://github.com/lucky-sideburn/congruit/tree/master/stockroom
+1. Create your stockroom. I would like create a public repository with commons and useful workplaces. For now you can take a look as example at https://github.com/lucky-sideburn/congruit/tree/master/stockroom
 
 2. You need to describe your places. Example:
   * is this server running a specific Linux Distribution?
-  * are there particulare configuration files, software installed, environment variables that describe the role / functionality of this server?
+  * are there particular configuration files, software installed, environment variables that describe the role / functionality of this server?
   * places are executed before works... You can inject files with environment variables that can be used by works.
   Put places in stockroom/places/ folder
  
 3. Create works. Put the scripts in stockroom/works. Works install software, get configuration file from a repository, manage Docker containers ecc.. 
   
-4. Crate workplaces in stockroom/workplaces. Try to make them usable in more environments and follow this example:
+4. Create workplaces in stockroom/workplaces. Try to make them usable in more environments and follow this example:
 
 Workplaces are array of hashes
 ```
