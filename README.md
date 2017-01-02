@@ -120,7 +120,7 @@ Workplaces are array of hashes
 
 ## Try Congruit With Vagrant
 
-* Show available virtual machine in current Vagrant project
+* List all virtual machine in current Vagrant project
 
 ```
 eugenio@local:[~/WORK/GO/src/congruit]: vagrant status
