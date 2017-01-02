@@ -73,7 +73,7 @@ Example:
 ]
 ```
 the workplace will take care to decide which is the correct strategy for install Screen.
-Congruit will execute places and, if they will return 0, do works.
+Congruit executes places and, if they returns 0, does works.
 
 ## Build you workplace
 1. Create or pull you stockroom
@@ -81,12 +81,12 @@ Congruit will execute places and, if they will return 0, do works.
 2. You need to describe your places. Example:
   * is this server running a specific Linux Distribution?
   * are there particulare configuration files, software installed, environment variables that describe the role / functionality of this server?
-  * places are executed before works... You can inject create files with environment variables that works can use
+  * places are executed before works... You can inject files with environment variables that can be used by works.
   Put places in stockroom/places/ folder
  
-3. Create works. Put the scripts in stockroom/works. Works do all things like install software, get configuration file from a repository ecc.. 
+3. Create works. Put the scripts in stockroom/works. Works install software, get configuration file from a repository, manage Docker containers ecc.. 
   
-4. Crate workplaces in stockroom/workplaces. Try to make them usable in more environments and follow thi example:
+4. Crate workplaces in stockroom/workplaces. Try to make them usable in more environments and follow this example:
 
 Workplaces are array of hashes
 ```
@@ -111,7 +111,7 @@ Workplaces are array of hashes
 
 ## Prerequisites
 1. GO
-2. a stockroom. You can take as example the stockroom present in this repo. Please create symlink from stockroom/workplaces/foo to stockroom/workplaces_enabled/foo if you want apply the workplace "foo" during congruit execution
+2. a stockroom. You can take as example the stockroom present in this repo. Please, create symlink from stockroom/workplaces/foo to stockroom/workplaces_enabled/foo if you want apply the workplace "foo" during congruit execution
 
 ## Usage
 1. `git clone https://github.com/lucky-sideburn/congruit.git`
