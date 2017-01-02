@@ -1,5 +1,8 @@
 ## Congruit
 
+![alt text](https://github.com/lucky-sideburn/congruit/blob/master/img/logo.png "Tux1")
+![alt text](https://github.com/lucky-sideburn/congruit/blob/master/img/logo.png "Tux2")
+
 ### The configuration management tool that loves Bash
 #### Simple, lightweight and fully customizable by you
 
@@ -76,7 +79,7 @@ the workplace takes care to decide which is the correct strategy for install Scr
 Congruit executes places and, if they returns 0, does works.
 
 ## Build you workplace
-1. Create your stockroom. I would like create a public repository with commons and usefule workplaces. For now you can take a look as example to https://github.com/lucky-sideburn/congruit/tree/master/stockroom
+1. Create your stockroom. I would like create a public repository with commons and useful workplaces. For now you can take a look as example to https://github.com/lucky-sideburn/congruit/tree/master/stockroom
 
 2. You need to describe your places. Example:
   * is this server running a specific Linux Distribution?
