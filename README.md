@@ -29,7 +29,7 @@
 **[Usage](#usage)**
 
 ## Description
-Congruit is a lightweight configuration management and automation tool. It is written in Go but works through Bash. It manages shell scripts you created for configure your Linux platforms.
+Congruit is a lightweight configuration management and automation tool. It is written in Go but works through Bash. It manages shell scripts you created to configure your Linux platforms.
 
 ## Concepts
 The main concepts of Congruit are
@@ -37,7 +37,7 @@ The main concepts of Congruit are
 * Stockroom repository
 * Works
 * Places
-* Worksplaces
+* Workplaces
 
 ## Stockroom
 The Stockroom is the main repository that describes your platform. Congruit reads the stockroom and does things
