@@ -132,7 +132,7 @@ export WORKPLACES_ENABLED=install_screen
 vagrant provision Centos7
 ```
 
-Remember to set WORKPLACES_ENABLED (example: WORKPLACES_ENABLED=do_this,do_this2,do_foobar) in oder to execute workplaces
+Remember to set WORKPLACES_ENABLED (example: WORKPLACES_ENABLED=do_this,do_this2,do_foobar) in order to execute workplaces
 
 ## Prerequisites
 1. GO
