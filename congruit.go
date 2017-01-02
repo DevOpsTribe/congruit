@@ -103,37 +103,39 @@ func main() {
 
 				for _, wp := range workplaces {
 
-					if *Debug {
-						log.Printf("Found workplace: " + wp.Name())
-					}
+					if (strings.EqualFold(wp.Name(), "README.md") == false){
+						if *Debug {
+							log.Printf("Found workplace: " + wp.Name())
+						}
 
-					file, _ := os.Open("stockroom/workplaces_enabled/" + wp.Name())
-					decoder := json.NewDecoder(file)
+						file, _ := os.Open("stockroom/workplaces_enabled/" + wp.Name())
+						decoder := json.NewDecoder(file)
 
-					_, err := decoder.Token()
-					if err != nil {
-						log.Fatal(err)
-					}
-
-					//fmt.Printf("%T: %v\n", t, t)
-					cnt := 1
-
-					for decoder.More() {
-
-						configuration := WorkplaceConfigurationJson{}
-
-						err := decoder.Decode(&configuration)
+						_, err := decoder.Token()
 						if err != nil {
 							log.Fatal(err)
 						}
 
-						thisworkplace := new(congruit.WorkPlace)
-						thisworkplace.Name = wp.Name() + "@" + strconv.Itoa(cnt)
-						thisworkplace.Works = configuration.Works
-						thisworkplace.Places = configuration.Places
-						log.Printf("Loading workplace: " + wp.Name() + "@" + strconv.Itoa(cnt))
-						workplaces_ptr = append(workplaces_ptr, thisworkplace)
-						cnt = cnt + 1
+						//fmt.Printf("%T: %v\n", t, t)
+						cnt := 1
+
+						for decoder.More() {
+
+							configuration := WorkplaceConfigurationJson{}
+
+							err := decoder.Decode(&configuration)
+							if err != nil {
+								log.Fatal(err)
+							}
+
+							thisworkplace := new(congruit.WorkPlace)
+							thisworkplace.Name = wp.Name() + "@" + strconv.Itoa(cnt)
+							thisworkplace.Works = configuration.Works
+							thisworkplace.Places = configuration.Places
+							log.Printf("Loading workplace: " + wp.Name() + "@" + strconv.Itoa(cnt))
+							workplaces_ptr = append(workplaces_ptr, thisworkplace)
+							cnt = cnt + 1
+						}
 					}
 				}
 			}

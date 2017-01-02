@@ -1,10 +1,2 @@
 [ ! -e /etc/redhat-release ] && exit 1
-if cat /etc/redhat-release | grep "Fedora release 2.*"; then
-    if grep 'Fedora release 2[012].*' /etc/redhat-release; then
-        exit 1
-    else
-        exit 0
-    fi
-fi
-
-
+grep -i "Fedora release 2[012].*" /etc/redhat-release
