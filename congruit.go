@@ -3,21 +3,13 @@ package main
 import (
 	"./congruit-go/libs"
 	"bytes"
-	"encoding/json"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
-	"os"
 	"os/exec"
 	"strconv"
 	"strings"
 )
-
-type WorkplaceConfigurationJson struct {
-	Places []string
-	Works  []string
-}
 
 func main() {
 
@@ -47,100 +39,7 @@ func main() {
 
 	var goodplace bool
 
-	files, err := ioutil.ReadDir(*StockRoomDir)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for _, file := range files {
-
-		if file.IsDir() {
-
-			if strings.EqualFold(file.Name(), "places") {
-
-				log.Printf("Loading places...")
-
-				places, _ := ioutil.ReadDir(*StockRoomDir + "/places")
-
-				for _, p := range places {
-
-					if *Debug {
-						log.Printf("Found place: " + p.Name())
-					}
-					thisplace := new(congruit.Place)
-					thisplace.Name = p.Name()
-					content1, _ := ioutil.ReadFile(*StockRoomDir + "/places/" + p.Name())
-					thisplace.Command = string(content1)
-					places_ptr = append(places_ptr, thisplace)
-
-				}
-
-			} else if strings.EqualFold(file.Name(), "works") {
-
-				log.Printf("Loading works...")
-
-				works, _ := ioutil.ReadDir(*StockRoomDir + "/works")
-
-				for _, w := range works {
-
-					if *Debug {
-						log.Printf("Found work: " + w.Name())
-					}
-					thiswork := new(congruit.Work)
-					thiswork.Name = w.Name()
-					content2, _ := ioutil.ReadFile(*StockRoomDir + "/works/" + w.Name())
-					thiswork.Command = string(content2)
-					works_ptr = append(works_ptr, thiswork)
-
-				}
-
-			} else if strings.EqualFold(file.Name(), "workplaces") {
-
-				log.Printf("Loading workplaces...")
-
-				workplaces, _ := ioutil.ReadDir(*StockRoomDir + "/workplaces_enabled")
-
-				for _, wp := range workplaces {
-
-					if strings.EqualFold(wp.Name(), "README.md") == false {
-						if *Debug {
-							log.Printf("Found workplace: " + wp.Name())
-						}
-
-						file, _ := os.Open(*StockRoomDir + "/workplaces_enabled/" + wp.Name())
-						decoder := json.NewDecoder(file)
-
-						_, err := decoder.Token()
-						if err != nil {
-							log.Fatal(err)
-						}
-
-						//fmt.Printf("%T: %v\n", t, t)
-						cnt := 1
-
-						for decoder.More() {
-
-							configuration := WorkplaceConfigurationJson{}
-
-							err := decoder.Decode(&configuration)
-							if err != nil {
-								log.Fatal(err)
-							}
-
-							thisworkplace := new(congruit.WorkPlace)
-							thisworkplace.Name = wp.Name() + "@" + strconv.Itoa(cnt)
-							thisworkplace.Works = configuration.Works
-							thisworkplace.Places = configuration.Places
-							log.Printf("Loading workplace: " + wp.Name() + "@" + strconv.Itoa(cnt))
-							workplaces_ptr = append(workplaces_ptr, thisworkplace)
-							cnt = cnt + 1
-						}
-					}
-				}
-			}
-		}
-	}
+	places_ptr, works_ptr, workplaces_ptr = congruit.LoadStockroom(*StockRoomDir, *Debug)
 
 	var command string
 
