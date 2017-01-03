@@ -130,6 +130,111 @@ vagrant provision Centos7
 
 Remember to set WORKPLACES_ENABLED (example: WORKPLACES_ENABLED=do_this,do_this2,do_foobar) in order to execute workplaces
 
+Example of Vagrant's output:
+
+```
+==> Centos7:                          _ _
+==> Centos7:  ___ ___ ___ ___ ___ _ _|_| |_
+==> Centos7: |  _| . |   | . |  _| | | |  _|
+==> Centos7: |___|___|_|_|_  |_| |___|_|_|
+==> Centos7:             |___|
+==> Centos7: Version: 1.0.0
+==> Centos7: 2017/01/03 09:02:02 Loading places...
+==> Centos7: 2017/01/03 09:02:02 Found place: centos7
+==> Centos7: 2017/01/03 09:02:02 Found place: debian
+==> Centos7: 2017/01/03 09:02:02 Found place: docker_tomcat_is_not_running
+==> Centos7: 2017/01/03 09:02:02 Found place: everywhere
+==> Centos7: 2017/01/03 09:02:02 Found place: fedora
+==> Centos7: 2017/01/03 09:02:02 Found place: git_is_not_installed
+==> Centos7: 2017/01/03 09:02:02 Found place: osx
+==> Centos7: 2017/01/03 09:02:02 Found place: screen_is_not_installed
+==> Centos7: 2017/01/03 09:02:02 Loading workplaces...
+==> Centos7: 2017/01/03 09:02:02 Found workplace: install_screen
+==> Centos7: 2017/01/03 09:02:02 Loading workplace: install_screen@1
+==> Centos7: 2017/01/03 09:02:02 Loading workplace: install_screen@2
+==> Centos7: 2017/01/03 09:02:02 Loading workplace: install_screen@3
+==> Centos7: 2017/01/03 09:02:02 Loading works...
+==> Centos7: 2017/01/03 09:02:02 Found work: run_tomcat_docker
+==> Centos7: 2017/01/03 09:02:02 Found work: screen_package_apt
+==> Centos7: 2017/01/03 09:02:02 Found work: screen_package_dnf
+==> Centos7: 2017/01/03 09:02:02 Found work: screen_package_yum
+==> Centos7: 2017/01/03 09:02:02
+==> Centos7:  ***
+==> Centos7:  Going to apply workplaces
+==> Centos7:  ***
+==> Centos7: 2017/01/03 09:02:02 Workplace: install_screen@1
+==> Centos7: 2017/01/03 09:02:02 Checking places...
+==> Centos7: 2017/01/03 09:02:02 Testing Place: debian
+==> Centos7: 2017/01/03 09:02:02 Executing Place:
+==> Centos7: [ -e /etc/debian_version ] && exit 0
+==> Centos7: 2017/01/03 09:02:02 Workplace install_screen@1 not needed here!
+==> Centos7: 2017/01/03 09:02:02 Workplace: install_screen@2
+==> Centos7: 2017/01/03 09:02:02 Checking places...
+==> Centos7: 2017/01/03 09:02:02 Testing Place: centos7
+==> Centos7: 2017/01/03 09:02:02 Executing Place:
+==> Centos7: [ ! -e /etc/redhat-release ] && exit 1
+==> Centos7: cat /etc/redhat-release | grep -i "Centos Linux release 7.*"
+==> Centos7: 2017/01/03 09:02:02 Place execution output: CentOS Linux release 7.2.1511 (Core)
+==> Centos7: 2017/01/03 09:02:02 Testing Place: screen_is_not_installed
+==> Centos7: 2017/01/03 09:02:02 Executing Place:
+==> Centos7: which screen
+==> Centos7: if [ $? -ne 0 ]
+==> Centos7: then
+==> Centos7:   exit 0
+==> Centos7: else
+==> Centos7:   exit 1
+==> Centos7: fi
+==> Centos7: 2017/01/03 09:02:02 Place execution output:
+==> Centos7: 2017/01/03 09:02:02 Executing Work:
+==> Centos7: yum -y install screen
+==> Centos7: 2017/01/03 09:02:04 Loaded plugins: fastestmirror
+==> Centos7: Loading mirror speeds from cached hostfile
+==> Centos7:  * base: mirror.crazynetwork.it
+==> Centos7:  * epel: pkg.adfinis-sygroup.ch
+==> Centos7:  * extras: mirror.crazynetwork.it
+==> Centos7:  * updates: mirror.crazynetwork.it
+==> Centos7: Resolving Dependencies
+==> Centos7: --> Running transaction check
+==> Centos7: ---> Package screen.x86_64 0:4.1.0-0.23.20120314git3c2946.el7_2 will be installed
+==> Centos7: --> Finished Dependency Resolution
+==> Centos7:
+==> Centos7: Dependencies Resolved
+==> Centos7:
+==> Centos7: ================================================================================
+==> Centos7:  Package    Arch       Version                                   Repository
+==> Centos7:                                                                            Size
+==> Centos7: ================================================================================
+==> Centos7: Installing:
+==> Centos7:  screen     x86_64     4.1.0-0.23.20120314git3c2946.el7_2        base     552 k
+==> Centos7:
+==> Centos7: Transaction Summary
+==> Centos7: ================================================================================
+==> Centos7: Install  1 Package
+==> Centos7:
+==> Centos7: Total download size: 552 k
+==> Centos7: Installed size: 914 k
+==> Centos7: Downloading packages:
+==> Centos7: Running transaction check
+==> Centos7: Running transaction test
+==> Centos7: Transaction test succeeded
+==> Centos7: Running transaction
+==> Centos7:   Installing : screen-4.1.0-0.23.20120314git3c2946.el7_2.x86_64             1/1
+==> Centos7:   Verifying  : screen-4.1.0-0.23.20120314git3c2946.el7_2.x86_64             1/1
+==> Centos7:
+==> Centos7: Installed:
+==> Centos7:   screen.x86_64 0:4.1.0-0.23.20120314git3c2946.el7_2
+==> Centos7:
+==> Centos7: Complete!
+==> Centos7: 2017/01/03 09:02:04 Workplace: install_screen@3
+==> Centos7: 2017/01/03 09:02:04 Checking places...
+==> Centos7: 2017/01/03 09:02:04 Testing Place: fedora
+==> Centos7: 2017/01/03 09:02:04 Executing Place:
+==> Centos7: [ ! -e /etc/redhat-release ] && exit 1
+==> Centos7: grep -i "Fedora release 2[012].*" /etc/redhat-release
+==> Centos7: 2017/01/03 09:02:04 Workplace install_screen@3 not needed here!
+==> Centos7: 2017/01/03 09:02:04 Extecuted works: 1
+```
+
 ## Prerequisites
 1. GO
 2. a stockroom. You can take as example the stockroom present in this repo. Please, create symlink from stockroom/workplaces/foo to stockroom/workplaces_enabled/foo if you want apply the workplace "foo" during congruit execution
