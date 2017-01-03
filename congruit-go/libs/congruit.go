@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 	"strconv"
+		"bytes"
+	"os/exec"
 	"strings"
 )
 
@@ -28,6 +30,100 @@ type WorkPlace struct {
 	Name   string
 	Works  []string
 	Places []string
+}
+
+
+func ExecuteStockroom(Debug bool,places_ptr []*Place, works_ptr []*Work, workplaces_ptr []*WorkPlace) (int){
+
+	var goodplace bool
+
+	var command string
+
+	ExecutedWorks := 0
+
+
+	for i := range workplaces_ptr {
+
+			goodplace = true
+			workplace := workplaces_ptr[i]
+			log.Printf("Workplace: " + workplace.Name)
+
+			log.Printf("Checking places...")
+
+			for k := range workplace.Places {
+
+				z := workplace.Places[k]
+				log.Printf("Testing Place: " + z)
+
+				for p := range places_ptr {
+
+					place := places_ptr[p]
+
+					if strings.EqualFold(z, place.Name) {
+						command = place.Command
+					}
+
+				}
+
+				if Debug {
+					log.Printf("Executing Place:\n" + command)
+				}
+
+				cmd := exec.Command("bash", "-c", command)
+				var out bytes.Buffer
+				cmd.Stdout = &out
+				err := cmd.Run()
+
+				if err != nil {
+					goodplace = false
+					break
+				}
+
+				if Debug {
+					log.Printf("Place execution output: " + out.String())
+				}
+			}
+
+			command = ""
+
+			if goodplace == true {
+
+				for k := range workplace.Works {
+					j := workplace.Works[k]
+
+					for w := range works_ptr {
+
+						work := works_ptr[w]
+
+						if strings.EqualFold(j, work.Name) {
+							command = work.Command
+						}
+					}
+
+					log.Printf("Executing Work:\n" + command)
+
+					cmd := exec.Command("bash", "-c", command)
+					var out bytes.Buffer
+					cmd.Stdout = &out
+					err := cmd.Run()
+
+					ExecutedWorks = ExecutedWorks + 1
+
+					if err != nil {
+
+					}
+					log.Printf(out.String())
+				}
+
+			} else {
+
+				if Debug {
+					log.Printf("Workplace " + workplace.Name + " not needed here!")
+				}
+
+			}
+		}
+	return ExecutedWorks
 }
 
 func LoadStockroom(StockRoomDir string, Debug bool) ([]*Place, []*Work, []*WorkPlace) {
