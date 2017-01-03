@@ -61,7 +61,7 @@ func main() {
 
 				log.Printf("Loading places...")
 
-				places, _ := ioutil.ReadDir("stockroom/places")
+				places, _ := ioutil.ReadDir(*StockRoomDir + "/places")
 
 				for _, p := range places {
 
@@ -70,7 +70,7 @@ func main() {
 					}
 					thisplace := new(congruit.Place)
 					thisplace.Name = p.Name()
-					content1, _ := ioutil.ReadFile("stockroom/places/" + p.Name())
+					content1, _ := ioutil.ReadFile(*StockRoomDir + "/places/" + p.Name())
 					thisplace.Command = string(content1)
 					places_ptr = append(places_ptr, thisplace)
 
@@ -80,7 +80,7 @@ func main() {
 
 				log.Printf("Loading works...")
 
-				works, _ := ioutil.ReadDir("stockroom/works")
+				works, _ := ioutil.ReadDir(*StockRoomDir + "/works")
 
 				for _, w := range works {
 
@@ -89,7 +89,7 @@ func main() {
 					}
 					thiswork := new(congruit.Work)
 					thiswork.Name = w.Name()
-					content2, _ := ioutil.ReadFile("stockroom/works/" + w.Name())
+					content2, _ := ioutil.ReadFile(*StockRoomDir + "/works/" + w.Name())
 					thiswork.Command = string(content2)
 					works_ptr = append(works_ptr, thiswork)
 
@@ -99,7 +99,7 @@ func main() {
 
 				log.Printf("Loading workplaces...")
 
-				workplaces, _ := ioutil.ReadDir("stockroom/workplaces_enabled")
+				workplaces, _ := ioutil.ReadDir(*StockRoomDir + "/workplaces_enabled")
 
 				for _, wp := range workplaces {
 
@@ -108,7 +108,7 @@ func main() {
 							log.Printf("Found workplace: " + wp.Name())
 						}
 
-						file, _ := os.Open("stockroom/workplaces_enabled/" + wp.Name())
+						file, _ := os.Open(*StockRoomDir + "/workplaces_enabled/" + wp.Name())
 						decoder := json.NewDecoder(file)
 
 						_, err := decoder.Token()
