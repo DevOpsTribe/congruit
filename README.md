@@ -6,7 +6,7 @@
 
 **[Description](#description)**
 
-**[New! Make clusters with congruit)(#ha)**
+**[Docker cluster example with congruit](#docker)**
 
 **[Concepts](#concepts)**
 
@@ -29,7 +29,7 @@
 ## Description
 Congruit is a lightweight configuration management and automation tool. It is written in Go but works through Bash. It manages shell scripts you created to configure your Linux platforms.
 
-## ha
+## Docker
 Congruit manages cluster through supervisor and friend mode. You can configure floating ip or manage Docker clusters.
 
 Let's show ho to put in place a simple docker cluster
