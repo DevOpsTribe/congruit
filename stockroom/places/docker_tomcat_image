@@ -1,1 +1,1 @@
-docker images -a | grep tomcat
+docker images -a | grep -v tomcat

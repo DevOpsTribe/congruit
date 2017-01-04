@@ -1,1 +1,1 @@
-docker run --rm -p 8888:8080 tomcat:latest &> /dev/null &
+ps -ef | grep docker | grep tomcat || docker run --rm -p 8888:8080 tomcat:latest &> /dev/null &
