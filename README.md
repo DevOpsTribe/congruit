@@ -30,13 +30,12 @@
 Congruit is a lightweight configuration management and automation tool. It is written in Go but works through Bash. It manages shell scripts you created to configure your Linux platforms.
 
 ## Docker
-Congruit manages cluster through supervisor and friend mode. You can configure floating ip or manage Docker clusters.
+Congruit manages cluster through **supervisor and friend mode**.
+You can configure light Docker clusters as described in the following example.
 
-Let's show ho to put in place a simple docker cluster
+1. Start Docker01 and Docker02 using Vagrant
 
-1. Start the server Docker01 and Docker02
-
-Leave WORKPLACES_ENABLED empty!
+** Leave WORKPLACES_ENABLED empty! **
 
 ```
 vagrant up Docker01
@@ -49,7 +48,7 @@ vagrant status
 Docker01                  running (virtualbox)
 Docker02                  running (virtualbox)
 ```
-If all things have done correctly, Congruit will start and wait for commands sent by the cluster controller.
+Congruit starts and waits for commands sent by a cluster controller.
 
 ```
 ==> Docker02: Running provisioner: shell...
@@ -68,17 +67,21 @@ If all things have done correctly, Congruit will start and wait for commands sen
 ==> Docker02: 2017/01/04 17:11:06 Extecuted works: 0
 ```
 
-2. Start dockers with the following command from you workstation:
+2. Start dockers from your workstation:
 
 ```
-./congruit --stockroom-dir=stockroom-docker-clu-controller/ -supervisor  -debug
+./congruit -stockroom-dir=stockroom-docker-clu-controller/ -supervisor  -debug
 ````
-Note that --stockroom-dir=stockroom-docker-clu-controller/ is not the commond stockroom. It is a stockroom created for run a cluster controller.
 
 Parameters:
-* -supervisor => Run congruit continusly
-* -friend => starts congruit in friends mode... In this mode a Congruit instance can receive remote command from a controller
-* -token => authentication tocket
+
+* -supervisor => Runs congruit in supervisor mode.
+
+* -friend => Runs congruit in friends mode. A Congruit instance receives remote commands to execute workplace
+
+* -token => authentication tocker for security
+
+* -stockroom-dir=stockroom-docker-clu-controller/ => custom stockroom for a cluster controller
 
 For keeping up Dockers you can use works like this:
 
