@@ -38,7 +38,7 @@ You can configure light Docker clusters as described in the following example.
 
 1. Start Docker01 and Docker02 using Vagrant
 
-** Leave WORKPLACES_ENABLED empty! **
+**leave WORKPLACES_ENABLED empty**
 
 ```
 vagrant up Docker01
@@ -80,13 +80,13 @@ Parameters:
 
 * -supervisor => Runs congruit in supervisor mode.
 
-* -friend => Runs congruit in friends mode. A Congruit instance receives remote commands to execute workplace
+* -friend => Runs congruit in friend mode. A Congruit instance receives remote commands to execute workplace
 
-* -token => authentication tocker for security
+* -token => authentication tocken for security
 
 * -stockroom-dir=stockroom-docker-clu-controller/ => custom stockroom for a cluster controller
 
-For keeping up Dockers you can use works like this:
+Used works are like this:
 
 ```
 curl https://192.168.50.4:8443/hello  --header "Token:foobar" --header "Workplace:tomcat-docker"
