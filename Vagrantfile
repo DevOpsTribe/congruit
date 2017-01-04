@@ -69,7 +69,6 @@ Vagrant.configure("2") do |config|
   #   apt-get install -y apache2
   # SHELL
 
-
   config.vm.define 'Centos7' do |centos7|
 
     centos7.vm.hostname = 'centos7'
@@ -96,4 +95,4 @@ Vagrant.configure("2") do |config|
 
   end
 
-end
+
