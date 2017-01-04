@@ -34,8 +34,11 @@ func HelloServer(w http.ResponseWriter, req *http.Request, t string, StockRoomDi
 		log.Println("A remote agent asks to run |" + req.Header.Get("Workplace") + "|")
 
 		for i := range workplaces_ptr_temp {
-			log.Println(req.Header.Get("Workplace") + "@" + strconv.Itoa(i+1))
+
 			workplace := workplaces_ptr_temp[i]
+
+			log.Println(req.Header.Get("Workplace") + "@" + strconv.Itoa(i+1) + " comparing with " + workplace.Name)
+
 			if strings.EqualFold(req.Header.Get("Workplace")+"@"+strconv.Itoa(i+1), workplace.Name) {
 				workplaces_ptr = append(workplaces_ptr, workplaces_ptr_temp[i])
 				log.Println("A remote command starts worksplace " + req.Header.Get("Workspace"))
@@ -99,7 +102,7 @@ func main() {
 			HelloServer(w, r, *Token, *StockRoomDir, *Debug)
 		})
 
-		err := http.ListenAndServeTLS(":443", "domain.crt", "domain.key", nil)
+		err := http.ListenAndServeTLS(":8443", "domain.crt", "domain.key", nil)
 		if err != nil {
 			log.Fatal("ListenAndServe: ", err)
 		}
@@ -114,7 +117,7 @@ func main() {
 
 		log.Printf("start congruit supervisor...")
 
-		time.Sleep(2000 * time.Millisecond)
+		time.Sleep(5000 * time.Millisecond)
 
 		ExecutedWorks = congruit.ExecuteStockroom(*Debug, places_ptr, works_ptr, workplaces_ptr)
 

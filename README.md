@@ -6,6 +6,8 @@
 
 **[Description](#description)**
 
+**[New! Make clusters with congruit)(#ha)**
+
 **[Concepts](#concepts)**
 
 **[Stockroom](#stockroom)**
@@ -26,6 +28,64 @@
 
 ## Description
 Congruit is a lightweight configuration management and automation tool. It is written in Go but works through Bash. It manages shell scripts you created to configure your Linux platforms.
+
+## ha
+Congruit manages cluster through supervisor and friend mode. You can configure floating ip or manage Docker clusters.
+
+Let's show ho to put in place a simple docker cluster
+
+1. Start the server Docker01 and Docker02
+
+Leave WORKPLACES_ENABLED empty!
+
+```
+vagrant up Docker01
+vagrant up Docker02
+
+vagrant provision Docker01
+vagrant provision Docker02
+
+vagrant status
+Docker01                  running (virtualbox)
+Docker02                  running (virtualbox)
+```
+If all things have done correctly, Congruit will start and wait for commands sent by the cluster controller.
+
+```
+==> Docker02: Running provisioner: shell...
+    Docker02: Running: inline script
+==> Docker02: Running provisioner: shell...
+    Docker02: Running: inline script
+==> Docker02: Running provisioner: shell...
+    Docker02: Running: inline script
+==> Docker02:                          _ _
+==> Docker02:  ___ ___ ___ ___ ___ _ _|_| |_
+==> Docker02: |  _| . |   | . |  _| | | |  _|
+==> Docker02: |___|___|_|_|_  |_| |___|_|_|
+==> Docker02:             |___|
+==> Docker02: Version: 1.0.0
+==> Docker02: 2017/01/04 17:11:06 There are no workplaces to apply... Doing nothing...
+==> Docker02: 2017/01/04 17:11:06 Extecuted works: 0
+```
+
+2. Start dockers with the following command from you workstation:
+
+```
+./congruit --stockroom-dir=stockroom-docker-clu-controller/ -supervisor  -debug
+````
+Note that --stockroom-dir=stockroom-docker-clu-controller/ is not the commond stockroom. It is a stockroom created for run a cluster controller.
+
+Parameters:
+* -supervisor => Run congruit continusly
+* -friend => starts congruit in friends mode... In this mode a Congruit instance can receive remote command from a controller
+* -token => authentication tocket
+
+For keeping up Dockers you can use works like this:
+
+```
+curl https://192.168.50.4:8443/hello  --header "Token:foobar" --header "Workplace:tomcat-docker"
+curl https://192.168.50.5:8443/hello  --header "Token:foobar" --header "Workplace:tomcat-docker"
+```
 
 ## Concepts
 The main concepts of Congruit are

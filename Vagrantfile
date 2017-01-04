@@ -69,30 +69,52 @@ Vagrant.configure("2") do |config|
   #   apt-get install -y apache2
   # SHELL
 
-  config.vm.define 'Centos7' do |centos7|
+  config.vm.provision "shell",
+    inline: "yum -y install golang"
 
-    centos7.vm.hostname = 'centos7'
-    config.vm.box = "geerlingguy/centos7"
+  config.vm.provision "shell",
+    inline: "go build -o /usr/bin/congruit /vagrant/congruit.go"
 
-    centos7.vm.provision "shell",
-      inline: "yum -y install golang"
+  config.vm.provision "shell",
+    inline: "find /vagrant/stockroom/workplaces_enabled/ -type l -exec unlink '{}' ';'"
 
-    centos7.vm.provision "shell",
-      inline: " go build -o /usr/bin/conguit /vagrant/congruit.go"
+  config.vm.hostname = 'centos7'
+  config.vm.box = "geerlingguy/centos7"
 
-    centos7.vm.provision "shell",
-      inline: "find /vagrant/stockroom/workplaces_enabled/ -type l -exec unlink '{}' ';'"
-
-    if ENV['WORKPLACES_ENABLED']
-      ENV['WORKPLACES_ENABLED'].split(",").each do |w|
-        centos7.vm.provision "shell",
-          inline: "ln -s /vagrant/stockroom/workplaces/#{w} /vagrant/stockroom/workplaces_enabled/#{w}"
-      end
+  if ENV['WORKPLACES_ENABLED']
+    ENV['WORKPLACES_ENABLED'].split(",").each do |w|
+      config.vm.provision "shell",
+        inline: "ln -s /vagrant/stockroom/workplaces/#{w} /vagrant/stockroom/workplaces_enabled/#{w}"
     end
+  end
 
-    centos7.vm.provision "shell",
-      inline: "cd /vagrant && conguit --stockroom-dir=stockroom/ -debug"
+  config.vm.provision "shell",
+    inline: "cd /vagrant && congruit --stockroom-dir=stockroom/ -debug"
+
+
+  config.vm.define 'Centos7' do |centos7|
 
   end
 
+$script = <<SCRIPT
+pkill  congruit || echo 'congruit is not running'
+ln -s /vagrant/stockroom/workplaces/tomcat-docker /vagrant/stockroom/workplaces_enabled/tomcat-docker
+cd /vagrant
+congruit -debug -stockroom-dir=/vagrant/stockroom/ -friend -token foobar -debug
+SCRIPT
 
+  config.vm.define 'Docker01' do |docker01|
+    docker01.vm.network "private_network", ip: "192.168.50.4"
+    docker01.vm.hostname = 'docker01'
+    docker01.vm.provision "shell",
+      inline: $script
+  end
+
+  config.vm.define 'Docker02' do |docker02|
+    docker02.vm.network "private_network", ip: "192.168.50.5"
+    docker02.vm.hostname = 'docker02'
+    docker02.vm.provision "shell",
+      inline: $script
+  end
+
+end

@@ -60,9 +60,14 @@ func ExecuteStockroom(Debug bool,places_ptr []*Place, works_ptr []*Work, workpla
 					place := places_ptr[p]
 
 					if strings.EqualFold(z, place.Name) {
+						log.Printf("Command is \n" + place.Command )
 						command = place.Command
 					}
 
+				}
+
+				if len(command) == 0 {
+					log.Fatal("Error in loading places!")
 				}
 
 				if Debug {
@@ -97,6 +102,9 @@ func ExecuteStockroom(Debug bool,places_ptr []*Place, works_ptr []*Work, workpla
 
 						if strings.EqualFold(j, work.Name) {
 							command = work.Command
+							if len(command) == 0 {
+								log.Fatal("Error in loading places!")
+							}
 						}
 					}
 
@@ -148,6 +156,9 @@ func LoadStockroom(StockRoomDir string, Debug bool) ([]*Place, []*Work, []*WorkP
 		thiswork.Name = w.Name()
 		content, _ := ioutil.ReadFile(StockRoomDir + "/works/" + w.Name())
 		thiswork.Command = string(content)
+		if Debug {
+			log.Printf("Load work: " + thiswork.Name)
+		}
 		works_ptr = append(works_ptr, thiswork)
 	}
 
@@ -160,6 +171,9 @@ func LoadStockroom(StockRoomDir string, Debug bool) ([]*Place, []*Work, []*WorkP
 		thisplace.Name = p.Name()
 		content, _ := ioutil.ReadFile(StockRoomDir + "/places/" + p.Name())
 		thisplace.Command = string(content)
+		if Debug {
+			log.Printf("Load Place: " + thisplace.Name)
+		}
 		places_ptr = append(places_ptr, thisplace)
 
 	}
