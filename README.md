@@ -299,7 +299,7 @@ Example of Vagrant's output:
 ==> Centos7: grep -i "Fedora release 2[012].*" /etc/redhat-release
 ==> Centos7: 2017/01/03 09:02:04 Workplace install_screen@3 not needed here!
 ==> Centos7: 2017/01/03 09:02:04 Extecuted works: 1
-``
+```
 
 ## Prerequisites
 1. GO
