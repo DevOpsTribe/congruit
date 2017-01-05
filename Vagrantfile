@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
   config.vm.box = "geerlingguy/centos7"
 
   config.vm.provision "shell",
-    inline: "congruit -debug -stockroom-dir=/vagrant/stockroom/ -friend -token foobar -debug -gitrepo https://github.com/Congruit/example-stockroom.git -workplaces"
+    inline: "yum install git -y && congruit -debug -stockroom-dir=/vagrant/stockroom/ -friend -token foobar -debug -gitrepo https://github.com/Congruit/example-stockroom.git -workplaces #{ENV['WORKPLACES_ENABLED']}"
 
   config.vm.define 'Centos7' do |centos7|
 
