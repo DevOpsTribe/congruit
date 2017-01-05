@@ -80,9 +80,7 @@ func main() {
 
 	if len(*GitRepo) > 0 {
 
-		_, err := os.Stat("/tmp/stockroom")
-
-		if err != nil {
+		if _, err := os.Stat("/tmp/stockroom"); err == nil {
 			os.RemoveAll("/tmp/stockroom")
 		}
 
@@ -90,9 +88,12 @@ func main() {
 
 		*StockRoomDir = "/tmp/stockroom"
 
-		err = cmd.Run()
+		err := cmd.Run()
+
 		if err != nil {
+
 			log.Fatal("Error when pull stockroom repo")
+
 		}
 	}
 

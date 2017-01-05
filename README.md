@@ -6,7 +6,11 @@
 
 **[Description](#description)**
 
+**[Quick]
+
 **[Docker cluster example with congruit](#docker-cluster)**
+
+**[Quick Examples](#quick-examples)**
 
 **[Concepts](#concepts)**
 
@@ -29,6 +33,35 @@
 ## Description
 
 Congruit is a lightweight configuration management and automation tool. It is written in Go but works through Bash. It manages shell scripts you created to configure your Linux platforms.
+
+## Quick Examples
+
+* Do worksplace test
+```
+eugenio@local:[~/WORK/GO/src/congruit]: ./congruit -gitrepo https://github.com/Congruit/example-stockroom.git -workplaces test
+                         _ _
+ ___ ___ ___ ___ ___ _ _|_| |_
+|  _| . |   | . |  _| | | |  _|
+|___|___|_|_|_  |_| |___|_|_|
+            |___|
+Version: 1.1.0
+
+2017/01/05 10:21:10 Loading works...
+2017/01/05 10:21:10 Loading workplace: test@1
+2017/01/05 10:21:10 Workplace: test@1
+2017/01/05 10:21:10 Checking places...
+2017/01/05 10:21:10 Testing Place: osx
+2017/01/05 10:21:10 Command is
+case "$OSTYPE" in
+  darwin*)  exit 0 ;;
+  *)        exit 1 ;;
+esac
+2017/01/05 10:21:10 Executing Work:
+touch /tmp/foobar
+2017/01/05 10:21:10
+2017/01/05 10:21:10 Extecuted works: 1+
+```
+
 
 ## Docker Cluster
 
@@ -142,7 +175,7 @@ Example:
 the workplace is able to decide which is the correct strategy to install software.
 Congruit executes places and, if they return 0, it does works.
 
-## Build you workplace
+## Build your workplace
 1. Create your stockroom. I would like create a public repository with common and useful workplaces. For now you can take a look at https://github.com/lucky-sideburn/congruit/tree/master/stockroom
 
 2. You need to describe your places. Example:
