@@ -119,7 +119,7 @@ func ExecuteStockroom(Debug bool,places_ptr []*Place, works_ptr []*Work, workpla
 					if err != nil {
 
 					}
-					log.Printf(out.String())
+					log.Printf("Output: " + out.String())
 				}
 
 			} else {

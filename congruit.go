@@ -20,7 +20,17 @@ func HelloServer(w http.ResponseWriter, req *http.Request, t string, StockRoomDi
 	w.Header().Set("Content-Type", "text/plain")
 
 	if strings.EqualFold(t, (req.Header.Get("Token"))) {
+
 		w.Write([]byte("Hi dude!\n"))
+
+		_, err := os.Stat(StockRoomDir + "/workplaces_enabled/" + req.Header.Get("Workplace"))
+
+		if err != nil {
+			err := os.Link(StockRoomDir+"/workplaces/"+req.Header.Get("Workplace"), StockRoomDir+"/workplaces_enabled/"+req.Header.Get("Workplace"))
+			if err != nil {
+				log.Fatal("Error in enabling workplace!")
+			}
+		}
 
 		works_ptr := []*congruit.Work{}
 		workplaces_ptr_temp := []*congruit.WorkPlace{}
@@ -29,7 +39,7 @@ func HelloServer(w http.ResponseWriter, req *http.Request, t string, StockRoomDi
 
 		places_ptr, works_ptr, workplaces_ptr_temp = congruit.LoadStockroom(StockRoomDir, Debug)
 
-		log.Println("A remote agent asks to run " + req.Header.Get("Workplace") )
+		log.Println("A remote agent asks to run " + req.Header.Get("Workplace"))
 
 		for i := range workplaces_ptr_temp {
 
@@ -42,6 +52,7 @@ func HelloServer(w http.ResponseWriter, req *http.Request, t string, StockRoomDi
 		}
 
 		ExecutedWorks = congruit.ExecuteStockroom(Debug, places_ptr, works_ptr, workplaces_ptr)
+		w.Write([]byte("Executed works: " + strconv.Itoa(ExecutedWorks)))
 		return ExecutedWorks
 
 	} else {
@@ -64,7 +75,6 @@ func main() {
 	Token := flag.String("token", "nil", "token for talking with friends")
 	ssl_cert := flag.String("ssl_cert", "./", "path of a ssl certificate")
 	ssl_key := flag.String("ssl_key", "./", "path of a ssl key")
-
 
 	ExecutedWorks := 0
 

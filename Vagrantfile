@@ -30,7 +30,7 @@ Vagrant.configure("2") do |config|
 $script = <<SCRIPT
 pkill  congruit || echo 'congruit is not running'
 cd /vagrant
-congruit -debug -stockroom-dir=/vagrant/stockroom/ -friend -token foobar -debug -gitrepo https://github.com/Congruit/example-stockroom.git -workplaces tomcat-docker -ssl_cert /vagrant/insecure-domain.crt -ssl_key /vagrant/insecure-domain.key
+congruit -debug -friend -token foobar -debug -gitrepo https://github.com/Congruit/example-stockroom.git  -ssl_cert /vagrant/insecure-domain.crt -ssl_key /vagrant/insecure-domain.key
 SCRIPT
 
   config.vm.define 'Docker01' do |docker01|
