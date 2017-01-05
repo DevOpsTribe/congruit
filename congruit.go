@@ -6,14 +6,12 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"os/exec"
 	"strconv"
 	"strings"
 	"time"
 )
-
-func handler(w http.ResponseWriter, r *http.Request, mystr string) {
-	println(mystr)
-}
 
 func HelloServer(w http.ResponseWriter, req *http.Request, t string, StockRoomDir string, Debug bool) int {
 
@@ -31,13 +29,11 @@ func HelloServer(w http.ResponseWriter, req *http.Request, t string, StockRoomDi
 
 		places_ptr, works_ptr, workplaces_ptr_temp = congruit.LoadStockroom(StockRoomDir, Debug)
 
-		log.Println("A remote agent asks to run |" + req.Header.Get("Workplace") + "|")
+		log.Println("A remote agent asks to run " + req.Header.Get("Workplace") )
 
 		for i := range workplaces_ptr_temp {
 
 			workplace := workplaces_ptr_temp[i]
-
-			log.Println(req.Header.Get("Workplace") + "@" + strconv.Itoa(i+1) + " comparing with " + workplace.Name)
 
 			if strings.EqualFold(req.Header.Get("Workplace")+"@"+strconv.Itoa(i+1), workplace.Name) {
 				workplaces_ptr = append(workplaces_ptr, workplaces_ptr_temp[i])
@@ -56,9 +52,11 @@ func HelloServer(w http.ResponseWriter, req *http.Request, t string, StockRoomDi
 
 func main() {
 
-	const version string = "1.0.0"
+	const version string = "1.1.0"
 
 	StockRoomDir := flag.String("stockroom-dir", "./", "stockroom directory")
+	GitRepo := flag.String("gitrepo", "", "Git repo of stockroom")
+	WorkPlaces := flag.String("workplaces", "", "Workplace to apply")
 	CongruitVersion := flag.Bool("version", false, "show version")
 	Debug := flag.Bool("debug", false, "print more logs")
 	Supervisor := flag.Bool("supervisor", false, "enable supervisor mode")
@@ -80,21 +78,39 @@ func main() {
 		return
 	}
 
+	if len(*GitRepo) > 0 {
+
+		_, err := os.Stat("/tmp/stockroom")
+
+		if err != nil {
+			os.RemoveAll("/tmp/stockroom")
+		}
+
+		cmd := exec.Command("git", "clone", *GitRepo, "/tmp/stockroom")
+
+		*StockRoomDir = "/tmp/stockroom"
+
+		err = cmd.Run()
+		if err != nil {
+			log.Fatal("Error when pull stockroom repo")
+		}
+	}
+
+	wp := strings.Split(*WorkPlaces, ",")
+
+	for w := range wp {
+		_, err := os.Stat(*StockRoomDir + "/workplaces_enabled/" + wp[w])
+		if err != nil {
+			err := os.Link(*StockRoomDir+"/workPlaces/"+wp[w], *StockRoomDir+"/workplaces_enabled/"+wp[w])
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
+	}
+
 	works_ptr := []*congruit.Work{}
 	workplaces_ptr := []*congruit.WorkPlace{}
 	places_ptr := []*congruit.Place{}
-
-	if len(workplaces_ptr) == 0 {
-
-		log.Printf("There are no workplaces to apply... Doing nothing...")
-
-	} else {
-
-		log.Printf("\n *** \n Going to apply workplaces \n *** \n")
-
-	}
-
-	log.Printf("Extecuted works: " + strconv.Itoa(ExecutedWorks))
 
 	if *Friend {
 
@@ -112,6 +128,8 @@ func main() {
 	places_ptr, works_ptr, workplaces_ptr = congruit.LoadStockroom(*StockRoomDir, *Debug)
 
 	ExecutedWorks = congruit.ExecuteStockroom(*Debug, places_ptr, works_ptr, workplaces_ptr)
+
+	log.Printf("Extecuted works: " + strconv.Itoa(ExecutedWorks))
 
 	for *Supervisor {
 

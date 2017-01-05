@@ -1,3 +1,0 @@
-[ ! -e /etc/redhat-release ] && exit 1
-cat /etc/redhat-release | grep -i "Centos Linux release 7.*"
-

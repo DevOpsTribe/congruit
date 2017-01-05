@@ -1,2 +1,0 @@
-curl https://192.168.50.4/hello  --header "Token:foobar" --header "Workplace:tomcat_docker"
-curl https://192.168.50.5/hello  --header "Token:foobar" --header "Workplace:tomcat_docker"

@@ -1,1 +1,0 @@
-[ -e /etc/debian_version ] && exit 0

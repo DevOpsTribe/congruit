@@ -1,2 +1,0 @@
-[ ! -e /etc/redhat-release ] && exit 1
-grep -i "Fedora release 2[012].*" /etc/redhat-release

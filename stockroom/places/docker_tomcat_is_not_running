@@ -1,7 +1,0 @@
-docker ps | grep tomcat:latest &> /dev/null
-if [ $? -eq 1 ]
-then
-  exit 0
-else
-  exit 1
-fi
