@@ -1,15 +1,15 @@
 package congruit
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
-	"strconv"
-		"bytes"
 	"os/exec"
+	"strconv"
 	"strings"
-	"fmt"
 )
 
 type WorkplaceConfigurationJson struct {
@@ -33,8 +33,7 @@ type WorkPlace struct {
 	Places []string
 }
 
-
-func ExecuteStockroom(Debug bool,places_ptr []*Place, works_ptr []*Work, workplaces_ptr []*WorkPlace) (int){
+func ExecuteStockroom(Debug bool, places_ptr []*Place, works_ptr []*Work, workplaces_ptr []*WorkPlace) int {
 
 	var goodplace bool
 
@@ -44,95 +43,95 @@ func ExecuteStockroom(Debug bool,places_ptr []*Place, works_ptr []*Work, workpla
 
 	for i := range workplaces_ptr {
 
-			goodplace = true
-			workplace := workplaces_ptr[i]
-			log.Printf("Processing workplace " + workplace.Name)
+		goodplace = true
+		workplace := workplaces_ptr[i]
+		log.Printf("Processing workplace " + workplace.Name)
 
-			log.Printf("Checking places of workplace " + workplace.Name)
+		log.Printf("Checking places of workplace " + workplace.Name)
 
-			for k := range workplace.Places {
+		for k := range workplace.Places {
 
-				z := workplace.Places[k]
-				log.Printf("Testing place " + z)
-        place_name := ""
+			z := workplace.Places[k]
+			log.Printf("Testing place " + z)
+			place_name := ""
 
-				for p := range places_ptr {
+			for p := range places_ptr {
 
-					place := places_ptr[p]
+				place := places_ptr[p]
 
-					if strings.EqualFold(z, place.Name) {
-						//log.Printf("Command of " + place.Name + " is \n" + place.Command + "\n")
-						command = place.Command
-						place_name = place.Name
+				if strings.EqualFold(z, place.Name) {
+					//log.Printf("Command of " + place.Name + " is \n" + place.Command + "\n")
+					command = place.Command
+					place_name = place.Name
+				}
+
+			}
+
+			if len(command) == 0 {
+				log.Fatal("Error in loading places!")
+			}
+
+			cmd := exec.Command("bash", "-c", command)
+			var out bytes.Buffer
+			cmd.Stdout = &out
+			err := cmd.Run()
+
+			if err != nil {
+				goodplace = false
+				log.Printf("PLACE " + place_name + " DOES NOT RETURN 0... THIS NOT A GOOD PLACE TO RUN " + workplace.Name)
+				fmt.Println(err)
+				break
+			}
+
+			log.Printf("PLACE " + place_name + " RETURN 0")
+
+			if Debug {
+				//log.Printf("\n\n output of \n" + command + "\n is " + out.String() + "\n\n")
+			}
+		}
+
+		command = ""
+
+		if goodplace == true {
+
+			for k := range workplace.Works {
+				j := workplace.Works[k]
+
+				for w := range works_ptr {
+
+					work := works_ptr[w]
+
+					if strings.EqualFold(j, work.Name) {
+						command = work.Command
+						if len(command) == 0 {
+							log.Fatal("Error in loading places!")
+						}
 					}
-
 				}
 
-				if len(command) == 0 {
-					log.Fatal("Error in loading places!")
-				}
+				log.Printf("Executing work: \n" + command + "\n\n")
 
 				cmd := exec.Command("bash", "-c", command)
 				var out bytes.Buffer
 				cmd.Stdout = &out
 				err := cmd.Run()
 
+				ExecutedWorks = ExecutedWorks + 1
+
 				if err != nil {
-					goodplace = false
-					log.Printf("PLACE " + place_name + " DOES NOT RETURN 0... THIS NOT A GOOD PLACE TO RUN " + workplace.Name)
-				  fmt.Println(err)
-					break
-				}
 
-				log.Printf("PLACE " + place_name + " RETURN 0")
-
-				if Debug {
-					//log.Printf("\n\n output of \n" + command + "\n is " + out.String() + "\n\n")
 				}
+				log.Printf("OUTPUT: " + out.String() + "\n")
 			}
 
-			command = ""
+		} else {
 
-			if goodplace == true {
-
-				for k := range workplace.Works {
-					j := workplace.Works[k]
-
-					for w := range works_ptr {
-
-						work := works_ptr[w]
-
-						if strings.EqualFold(j, work.Name) {
-							command = work.Command
-							if len(command) == 0 {
-								log.Fatal("Error in loading places!")
-							}
-						}
-					}
-
-					log.Printf("Executing work: \n" + command + "\n\n")
-
-					cmd := exec.Command("bash", "-c", command)
-					var out bytes.Buffer
-					cmd.Stdout = &out
-					err := cmd.Run()
-
-					ExecutedWorks = ExecutedWorks + 1
-
-					if err != nil {
-
-					}
-					log.Printf("OUTPUT: " + out.String() + "\n")
-				}
-
-			} else {
-
-				if Debug {
-					log.Printf("WORKPLACE " + workplace.Name + " NOT NEEDED HERE")
-				}
-
+			if Debug {
+				log.Printf("WORKPLACE " + workplace.Name + " NOT NEEDED HERE")
 			}
+
 		}
+	}
 	return ExecutedWorks
 }
 
