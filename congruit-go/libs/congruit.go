@@ -9,6 +9,7 @@ import (
 		"bytes"
 	"os/exec"
 	"strings"
+	"fmt"
 )
 
 type WorkplaceConfigurationJson struct {
@@ -53,24 +54,22 @@ func ExecuteStockroom(Debug bool,places_ptr []*Place, works_ptr []*Work, workpla
 
 				z := workplace.Places[k]
 				log.Printf("Testing place " + z)
+        place_name := ""
 
 				for p := range places_ptr {
 
 					place := places_ptr[p]
 
 					if strings.EqualFold(z, place.Name) {
-						log.Printf("Command of " + place.Name + " is \n" + place.Command )
+						//log.Printf("Command of " + place.Name + " is \n" + place.Command + "\n")
 						command = place.Command
+						place_name = place.Name
 					}
 
 				}
 
 				if len(command) == 0 {
 					log.Fatal("Error in loading places!")
-				}
-
-				if Debug {
-					//log.Printf("Executing place:\n" + command)
 				}
 
 				cmd := exec.Command("bash", "-c", command)
@@ -80,11 +79,15 @@ func ExecuteStockroom(Debug bool,places_ptr []*Place, works_ptr []*Work, workpla
 
 				if err != nil {
 					goodplace = false
+					log.Printf("PLACE " + place_name + " DOES NOT RETURN 0... THIS NOT A GOOD PLACE TO RUN " + workplace.Name)
+				  fmt.Println(err)
 					break
 				}
 
+				log.Printf("PLACE " + place_name + " RETURN 0")
+
 				if Debug {
-					log.Printf("[[ output of \n" + command + "\n is " + out.String() + "]]")
+					//log.Printf("\n\n output of \n" + command + "\n is " + out.String() + "\n\n")
 				}
 			}
 
@@ -107,7 +110,7 @@ func ExecuteStockroom(Debug bool,places_ptr []*Place, works_ptr []*Work, workpla
 						}
 					}
 
-					log.Printf("Executing work: \n" + command)
+					log.Printf("Executing work: \n" + command + "\n\n")
 
 					cmd := exec.Command("bash", "-c", command)
 					var out bytes.Buffer
@@ -119,7 +122,7 @@ func ExecuteStockroom(Debug bool,places_ptr []*Place, works_ptr []*Work, workpla
 					if err != nil {
 
 					}
-					log.Printf("Output: " + out.String())
+					log.Printf("OUTPUT: " + out.String() + "\n")
 				}
 
 			} else {
