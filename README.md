@@ -6,11 +6,9 @@
 
 **[Description](#description)**
 
-**[Quick]
+**[Quick Examples](#quick-examples)**
 
 **[Docker cluster example with congruit](#docker-cluster)**
-
-**[Quick Examples](#quick-examples)**
 
 **[Concepts](#concepts)**
 
