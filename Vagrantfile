@@ -18,17 +18,19 @@ Vagrant.configure("2") do |config|
   config.vm.hostname = 'centos7'
   config.vm.box = "geerlingguy/centos7"
 
-  config.vm.provision "shell",
-    inline: "yum install git -y && congruit -debug -stockroom-dir=/vagrant/stockroom/ -friend -token foobar -debug -gitrepo https://github.com/Congruit/example-stockroom.git -workplaces #{ENV['WORKPLACES_ENABLED']}"
+  if ENV['WORKPLACES_ENABLED']
+    config.vm.provision "shell",
+      inline: "yum install git -y && congruit -debug -stockroom-dir=/vagrant/stockroom/ -debug -gitrepo https://github.com/Congruit/example-stockroom.git -workplaces #{ENV['WORKPLACES_ENABLED']}"
 
-  config.vm.define 'Centos7' do |centos7|
+    config.vm.define 'Centos7' do |centos7|
 
+    end
   end
 
 $script = <<SCRIPT
 pkill  congruit || echo 'congruit is not running'
 cd /vagrant
-congruit -debug -stockroom-dir=/vagrant/stockroom/ -friend -token foobar -debug -gitrepo https://github.com/Congruit/example-stockroom.git
+congruit -debug -stockroom-dir=/vagrant/stockroom/ -friend -token foobar -debug -gitrepo https://github.com/Congruit/example-stockroom.git -workplaces tomcat-docker -ssl_cert /vagrant/insecure-domain.crt -ssl_key /vagrant/insecure-domain.key
 SCRIPT
 
   config.vm.define 'Docker01' do |docker01|

@@ -62,6 +62,9 @@ func main() {
 	Supervisor := flag.Bool("supervisor", false, "enable supervisor mode")
 	Friend := flag.Bool("friend", false, "enable friend mode")
 	Token := flag.String("token", "nil", "token for talking with friends")
+	ssl_cert := flag.String("ssl_cert", "./", "path of a ssl certificate")
+	ssl_key := flag.String("ssl_key", "./", "path of a ssl key")
+
 
 	ExecutedWorks := 0
 
@@ -102,7 +105,7 @@ func main() {
 	for w := range wp {
 		_, err := os.Stat(*StockRoomDir + "/workplaces_enabled/" + wp[w])
 		if err != nil {
-			err := os.Link(*StockRoomDir+"/workPlaces/"+wp[w], *StockRoomDir+"/workplaces_enabled/"+wp[w])
+			err := os.Link(*StockRoomDir+"/workplaces/"+wp[w], *StockRoomDir+"/workplaces_enabled/"+wp[w])
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -119,7 +122,7 @@ func main() {
 			HelloServer(w, r, *Token, *StockRoomDir, *Debug)
 		})
 
-		err := http.ListenAndServeTLS(":8443", "domain.crt", "domain.key", nil)
+		err := http.ListenAndServeTLS(":8443", *ssl_cert, *ssl_key, nil)
 		if err != nil {
 			log.Fatal("ListenAndServe: ", err)
 		}

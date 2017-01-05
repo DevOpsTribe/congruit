@@ -41,26 +41,25 @@ func ExecuteStockroom(Debug bool,places_ptr []*Place, works_ptr []*Work, workpla
 
 	ExecutedWorks := 0
 
-
 	for i := range workplaces_ptr {
 
 			goodplace = true
 			workplace := workplaces_ptr[i]
-			log.Printf("Workplace: " + workplace.Name)
+			log.Printf("Processing workplace " + workplace.Name)
 
-			log.Printf("Checking places...")
+			log.Printf("Checking places of workplace " + workplace.Name)
 
 			for k := range workplace.Places {
 
 				z := workplace.Places[k]
-				log.Printf("Testing Place: " + z)
+				log.Printf("Testing place " + z)
 
 				for p := range places_ptr {
 
 					place := places_ptr[p]
 
 					if strings.EqualFold(z, place.Name) {
-						log.Printf("Command is \n" + place.Command )
+						log.Printf("Command of " + place.Name + " is \n" + place.Command )
 						command = place.Command
 					}
 
@@ -71,7 +70,7 @@ func ExecuteStockroom(Debug bool,places_ptr []*Place, works_ptr []*Work, workpla
 				}
 
 				if Debug {
-					log.Printf("Executing Place:\n" + command)
+					//log.Printf("Executing place:\n" + command)
 				}
 
 				cmd := exec.Command("bash", "-c", command)
@@ -85,7 +84,7 @@ func ExecuteStockroom(Debug bool,places_ptr []*Place, works_ptr []*Work, workpla
 				}
 
 				if Debug {
-					log.Printf("Place execution output: " + out.String())
+					log.Printf("[[ output of \n" + command + "\n is " + out.String() + "]]")
 				}
 			}
 
@@ -108,7 +107,7 @@ func ExecuteStockroom(Debug bool,places_ptr []*Place, works_ptr []*Work, workpla
 						}
 					}
 
-					log.Printf("Executing Work:\n" + command)
+					log.Printf("Executing work: \n" + command)
 
 					cmd := exec.Command("bash", "-c", command)
 					var out bytes.Buffer
@@ -126,7 +125,7 @@ func ExecuteStockroom(Debug bool,places_ptr []*Place, works_ptr []*Work, workpla
 			} else {
 
 				if Debug {
-					log.Printf("Workplace " + workplace.Name + " not needed here!")
+					log.Printf("WORKPLACE " + workplace.Name + " NOT NEEDED HERE")
 				}
 
 			}

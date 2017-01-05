@@ -104,8 +104,9 @@ Congruit starts and waits for commands sent by a cluster controller.
 2. Start dockers from your workstation:
 
 ```
-./congruit -stockroom-dir=stockroom-docker-clu-controller/ -supervisor  -debug
-````
+./congruit -gitrepo https://github.com/Congruit/stockroom-docker-clu-controller.git -supervisor  -debug
+
+```
 
 Parameters:
 
