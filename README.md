@@ -22,8 +22,6 @@
 
 **[Build your workplaces](#build-your-workplaces)**
 
-**[Prerequisites](#prerequisites)**
-
 **[Try Congruit With Vagrant](#try-congruit-with-vagrant)**
 
 **[Usage](#usage)**
@@ -332,11 +330,6 @@ Example of Vagrant's output:
 ==> Centos7: 2017/01/03 09:02:04 Workplace install_screen@3 not needed here!
 ==> Centos7: 2017/01/03 09:02:04 Extecuted works: 1
 ```
-
-## Prerequisites
-1. GO
-2. a stockroom. You can take as example the stockroom present in this repo. Please, create symlink from stockroom/workplaces/foo to stockroom/workplaces_enabled/foo if you want apply the workplace "foo" during congruit execution
-
 
 ## Usage
 1. `git clone https://github.com/lucky-sideburn/congruit.git`
