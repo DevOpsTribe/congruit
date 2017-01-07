@@ -20,7 +20,7 @@
 
 **[Workplace](#workplace)**
 
-**[Build your workplaces](#build-your-workplaces)**
+**[Build your workplaces](#build-your-workplace)**
 
 **[Try Congruit With Vagrant](#try-congruit-with-vagrant)**
 
