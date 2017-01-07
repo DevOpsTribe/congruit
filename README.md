@@ -8,11 +8,11 @@
 
 **[Quick Examples](#quick-examples)**
 
-**[Run multiple worksplaces](#run-multiple-workplaces)**
+**[Run Worksplaces](#run-workplaces)**
 
-**[Run Multiple A Workplace remotely](#run-a-workplace-remotely)**
+**[Run Workplace Remotely](#run-workplace-remotely)**
 
-**[Run Multiple Workplaces remotely](#run-multiple-workplaces-remotely)**
+**[Run Multiple Workplaces Remotely](#run-multiple-workplaces-remotely)**
 
 **[Docker cluster example with congruit](#docker-cluster)**
 
@@ -65,7 +65,7 @@ touch /tmp/foobar
 ```
 
 
-## Run Multiple Workplaces
+## Run Workplaces
 
 **-workplaces test,test2**
 
@@ -73,7 +73,7 @@ touch /tmp/foobar
 ./congruit -gitrepo https://github.com/Congruit/example-stockroom.git -workplaces test,test2
 ```
 
-## Run A Workplace remotely
+## Run Workplace Remotely
 
 Start a remote Congruit:
 
@@ -88,7 +88,7 @@ curl https://192.168.50.4:8443/hello  --header "Token:foobar" --header "Workplac
 ```
 
 
-## Run Multiple Workplaces remotely
+## Run Multiple Workplaces Remotely
 
 Start a remote Congruit:
 
