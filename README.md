@@ -8,14 +8,6 @@
 
 **[Quick Examples](#quick-examples)**
 
-**[Run Worksplaces](#run-workplaces)**
-
-**[Run Workplace Remotely](#run-workplace-remotely)**
-
-**[Run Multiple Workplaces Remotely](#run-multiple-workplaces-remotely)**
-
-**[Docker cluster example with congruit](#docker-cluster)**
-
 **[Concepts](#concepts)**
 
 **[Stockroom](#stockroom)**
@@ -23,6 +15,14 @@
 **[Place](#place)**
 
 **[Work](#work)**
+
+**[Run Worksplaces](#run-workplaces)**
+
+**[Run Workplace Remotely](#run-workplace-remotely)**
+
+**[Run Multiple Workplaces Remotely](#run-multiple-workplaces-remotely)**
+
+**[Docker cluster example with congruit](#docker-cluster)**
 
 **[Workplace](#workplace)**
 
@@ -64,6 +64,54 @@ touch /tmp/foobar
 2017/01/05 10:21:10 Extecuted works: 1+
 ```
 
+## Concepts
+The main concepts of Congruit are
+
+* Stockroom repository
+* Works
+* Places
+* Workplaces
+
+## Stockroom
+The Stockroom is the main repository that describes your platform. Congruit reads the stockroom and does things.
+
+## Place
+A place is a shell script that must return 0. You should be in a right place to do a work.
+Example:
+
+Is this Linux server a Centos 7?
+
+```
+[ ! -e /etc/redhat-release ] && exit 1
+cat /etc/redhat-release | grep "Centos Linux release 7.*"
+```
+
+## Work
+Work is a shell script that installs and configures programs or runs Docker containers like in the following example:
+
+```
+docker run --rm -p 8888:8080 tomcat:latest &> /dev/null &
+```
+
+## Workplace
+Workplaces are the union between works and places and are JSON file.
+
+Example:
+
+```
+[
+  {
+   "places": ["debian","screen_is_not_installed"],
+   "works": ["screen_package_apt"]
+  },
+  {
+   "places": ["centos7","screen_is_not_installed"],
+   "works": ["screen_package_yum"]
+  }
+]
+```
+the workplace is able to decide which is the correct strategy to install software.
+Congruit executes places and, if they return 0, it does works.
 
 ## Run Workplaces
 
@@ -165,55 +213,6 @@ Used works are like this:
 curl https://192.168.50.4:8443/hello  --header "Token:foobar" --header "Workplace:tomcat-docker"
 curl https://192.168.50.5:8443/hello  --header "Token:foobar" --header "Workplace:tomcat-docker"
 ```
-
-## Concepts
-The main concepts of Congruit are
-
-* Stockroom repository
-* Works
-* Places
-* Workplaces
-
-## Stockroom
-The Stockroom is the main repository that describes your platform. Congruit reads the stockroom and does things.
-
-## Place
-A place is a shell script that must return 0. You should be in a right place to do a work.
-Example:
-
-Is this Linux server a Centos 7?
-
-```
-[ ! -e /etc/redhat-release ] && exit 1
-cat /etc/redhat-release | grep "Centos Linux release 7.*"
-```
-
-## Work
-Work is a shell script that installs and configures programs or runs Docker containers like in the following example:
-
-```
-docker run --rm -p 8888:8080 tomcat:latest &> /dev/null &
-```
-
-## Workplace
-Workplaces are the union between works and places and are JSON file.
-
-Example:
-
-```
-[
-  {
-   "places": ["debian","screen_is_not_installed"],
-   "works": ["screen_package_apt"]
-  },
-  {
-   "places": ["centos7","screen_is_not_installed"],
-   "works": ["screen_package_yum"]
-  }
-]
-```
-the workplace is able to decide which is the correct strategy to install software.
-Congruit executes places and, if they return 0, it does works.
 
 ## Build your workplace
 1. Create your stockroom. I would like create a public repository with common and useful workplaces. For now you can take a look at https://github.com/lucky-sideburn/congruit/tree/master/stockroom
