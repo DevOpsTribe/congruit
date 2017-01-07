@@ -7,13 +7,16 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"os/exec"
 	"strconv"
 	"strings"
 	"time"
 )
 
-func HelloServer(w http.ResponseWriter, req *http.Request, t string, StockRoomDir string, Debug bool) int {
+func HelloServer(w http.ResponseWriter, req *http.Request, t string, StockRoomDir string, Debug bool, GitRepo string) int {
+
+	if len(GitRepo) > 0 {
+		StockRoomDir = congruit.CloneRepo(GitRepo)
+	}
 
 	ExecutedWorks := 0
 
@@ -23,36 +26,40 @@ func HelloServer(w http.ResponseWriter, req *http.Request, t string, StockRoomDi
 
 		w.Write([]byte("Hi dude!\n"))
 
-		_, err := os.Stat(StockRoomDir + "/workplaces_enabled/" + req.Header.Get("Workplace"))
+		wp := strings.Split(req.Header.Get("Workplaces"), ",")
 
-		if err != nil {
-			err := os.Link(StockRoomDir+"/workplaces/"+req.Header.Get("Workplace"), StockRoomDir+"/workplaces_enabled/"+req.Header.Get("Workplace"))
+		for w := range wp {
+			log.Println("A remote agent asks to run " + wp[w])
+			_, err := os.Stat(StockRoomDir + "/workplaces_enabled/" + wp[w])
 			if err != nil {
-				log.Fatal("Error in enabling workplace!")
+				err := os.Link(StockRoomDir+"/workplaces/"+wp[w], StockRoomDir+"/workplaces_enabled/"+wp[w])
+				if err != nil {
+					log.Fatal(err)
+				}
 			}
 		}
 
+		if len(req.Header.Get("Workplace")) > 0 {
+
+			log.Println("A remote agent asks to run " + req.Header.Get("Workplace"))
+			_, err := os.Stat(StockRoomDir + "/workplaces_enabled/" + req.Header.Get("Workplace"))
+
+			if err != nil {
+				err := os.Link(StockRoomDir+"/workplaces/"+req.Header.Get("Workplace"), StockRoomDir+"/workplaces_enabled/"+req.Header.Get("Workplace"))
+				if err != nil {
+					log.Fatal("Error in enabling workplace!")
+				}
+			}
+
+		}
 		works_ptr := []*congruit.Work{}
-		workplaces_ptr_temp := []*congruit.WorkPlace{}
 		workplaces_ptr := []*congruit.WorkPlace{}
 		places_ptr := []*congruit.Place{}
 
-		places_ptr, works_ptr, workplaces_ptr_temp = congruit.LoadStockroom(StockRoomDir, Debug)
-
-		log.Println("A remote agent asks to run " + req.Header.Get("Workplace"))
-
-		for i := range workplaces_ptr_temp {
-
-			workplace := workplaces_ptr_temp[i]
-
-			if strings.EqualFold(req.Header.Get("Workplace")+"@"+strconv.Itoa(i+1), workplace.Name) {
-				workplaces_ptr = append(workplaces_ptr, workplaces_ptr_temp[i])
-				log.Println("A remote command starts worksplace " + req.Header.Get("Workspace"))
-			}
-		}
+		places_ptr, works_ptr, workplaces_ptr = congruit.LoadStockroom(StockRoomDir, Debug)
 
 		ExecutedWorks = congruit.ExecuteStockroom(Debug, places_ptr, works_ptr, workplaces_ptr)
-		w.Write([]byte("Executed works: " + strconv.Itoa(ExecutedWorks)))
+		w.Write([]byte("\n Remote executed works: " + strconv.Itoa(ExecutedWorks) + "\n"))
 		return ExecutedWorks
 
 	} else {
@@ -92,22 +99,7 @@ func main() {
 	}
 
 	if len(*GitRepo) > 0 {
-
-		if _, err := os.Stat("/tmp/stockroom"); err == nil {
-			os.RemoveAll("/tmp/stockroom")
-		}
-
-		cmd := exec.Command("git", "clone", *GitRepo, "/tmp/stockroom")
-
-		*StockRoomDir = "/tmp/stockroom"
-
-		err := cmd.Run()
-
-		if err != nil {
-
-			log.Fatal("Error when pull stockroom repo")
-
-		}
+		*StockRoomDir = congruit.CloneRepo(*GitRepo)
 	}
 
 	wp := strings.Split(*WorkPlaces, ",")
@@ -129,7 +121,7 @@ func main() {
 	if *Friend {
 
 		http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
-			HelloServer(w, r, *Token, *StockRoomDir, *Debug)
+			HelloServer(w, r, *Token, *StockRoomDir, *Debug, *GitRepo)
 		})
 
 		err := http.ListenAndServeTLS(":8443", *ssl_cert, *ssl_key, nil)

@@ -8,6 +8,12 @@
 
 **[Quick Examples](#quick-examples)**
 
+**[Run multiple worksplaces](#run-multiple-workplaces)**
+
+**[Run Multiple A Workplace remotely](#run-a-workplace-remotely)**
+
+**[Run Multiple Workplaces remotely](#run-multiple-workplaces-remotely)**
+
 **[Docker cluster example with congruit](#docker-cluster)**
 
 **[Concepts](#concepts)**
@@ -58,6 +64,43 @@ touch /tmp/foobar
 2017/01/05 10:21:10 Extecuted works: 1+
 ```
 
+
+## Run Multiple Workplaces
+
+**-workplaces test,test2**
+
+```
+./congruit -gitrepo https://github.com/Congruit/example-stockroom.git -workplaces test,test2
+```
+
+## Run A Workplace remotely
+
+Start a remote Congruit:
+
+```
+congruit -debug -friend -token foobar -debug -gitrepo https://github.com/Congruit/example-stockroom.git  -ssl_cert /vagrant/insecure-domain.crt -ssl_key /vagrant/insecure-domain.key
+```
+
+Start remotely a workplace using:
+
+```
+curl https://192.168.50.4:8443/hello  --header "Token:foobar" --header "Workplace:test"
+```
+
+
+## Run Multiple Workplaces remotely
+
+Start a remote Congruit:
+
+```
+congruit -debug -friend -token foobar -debug -gitrepo https://github.com/Congruit/example-stockroom.git  -ssl_cert /vagrant/insecure-domain.crt -ssl_key /vagrant/insecure-domain.key
+```
+
+Start remotely multiple workplace using:
+
+```
+curl https://192.168.50.4:8443/hello  --header "Token:foobar" --header "Workplaces:test,test2"
+```
 
 ## Docker Cluster
 

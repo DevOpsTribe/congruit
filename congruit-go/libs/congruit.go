@@ -220,3 +220,27 @@ func LoadStockroom(StockRoomDir string, Debug bool) ([]*Place, []*Work, []*WorkP
 	return places_ptr, works_ptr, workplaces_ptr
 
 }
+
+func CloneRepo (GitRepo string) string {
+
+  StockRoomDir := ""
+
+	if _, err := os.Stat("/tmp/stockroom"); err == nil {
+		os.RemoveAll("/tmp/stockroom")
+	}
+
+	cmd := exec.Command("git", "clone", GitRepo, "/tmp/stockroom")
+
+	StockRoomDir = "/tmp/stockroom"
+
+	err := cmd.Run()
+
+	if err != nil {
+
+		log.Fatal("Error when pull stockroom repo")
+
+	}
+
+	StockRoomDir = "/tmp/stockroom"
+  return StockRoomDir
+}
