@@ -60,7 +60,6 @@ func ExecuteStockroom(Debug bool, places_ptr []*Place, works_ptr []*Work, workpl
 				place := places_ptr[p]
 
 				if strings.EqualFold(z, place.Name) {
-					//log.Printf("Command of " + place.Name + " is \n" + place.Command + "\n")
 					command = place.Command
 					place_name = place.Name
 				}
@@ -78,12 +77,12 @@ func ExecuteStockroom(Debug bool, places_ptr []*Place, works_ptr []*Work, workpl
 
 			if err != nil {
 				goodplace = false
-				log.Printf("PLACE " + place_name + " DOES NOT RETURN 0... THIS NOT A GOOD PLACE TO RUN " + workplace.Name)
+				log.Printf("Place " + place_name + " does not return 0. This is not a good place to run " + workplace.Name)
 				fmt.Println(err)
 				break
 			}
 
-			log.Printf("PLACE " + place_name + " RETURN 0")
+			log.Printf("Place " + place_name + " returns 0")
 
 			if Debug {
 				//log.Printf("\n\n output of \n" + command + "\n is " + out.String() + "\n\n")
@@ -121,13 +120,15 @@ func ExecuteStockroom(Debug bool, places_ptr []*Place, works_ptr []*Work, workpl
 				if err != nil {
 
 				}
-				log.Printf("OUTPUT: " + out.String() + "\n")
+				if len(out.String()) > 0 {
+					log.Printf("command output: " + out.String() + "\n")
+				}
 			}
 
 		} else {
 
 			if Debug {
-				log.Printf("WORKPLACE " + workplace.Name + " NOT NEEDED HERE")
+				log.Printf("Workplace " + workplace.Name + " not needed here")
 			}
 
 		}
