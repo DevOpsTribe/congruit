@@ -8,6 +8,7 @@
 
 [Jenkins job for controlling Docker](http://jenkins.congruit.io:8080/job/congruit-develop-docker/)
 
+[Jenkins job for installing Screen](http://jenkins.congruit.io:8080/job/congruit-develop-install-screen/)
 
 ### Table of Contents
 
