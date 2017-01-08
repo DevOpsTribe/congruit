@@ -2,6 +2,12 @@
 ### The configuration management tool that loves Bash
 #### Simple, lightweight and fully customizable by you
 
+### Watch Congruit in action
+
+[Jenkins job - Test workplace](http://jenkins.congruit.io:8080/job/congruit-develop/)
+[Jenkins job for controlling Docker](http://jenkins.congruit.io:8080/job/congruit-develop-docker/)
+
+
 ### Table of Contents
 
 **[Description](#description)**
