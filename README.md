@@ -10,6 +10,14 @@
 
 [Jenkins job for installing Screen](http://jenkins.congruit.io:8080/job/congruit-develop-install-screen/)
 
+### Contribution
+
+If you find this project interesting, feel free to contribute with pull requests.
+We are happy to receive commits for the GO engine or some Bash stockrooms!
+
+contact me (eugenio.marzo@yahoo.it) for any further information!
+
+
 ### Table of Contents
 
 **[Description](#description)**
