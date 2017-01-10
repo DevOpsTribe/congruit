@@ -91,7 +91,7 @@ func ExecuteStockroom(Debug bool, places []Place, works []Work, workplaces []Wor
 
 		command = ""
 
-		if goodplace == true {
+		if goodplace {
 
 			for k := range workplace.Works {
 				j := workplace.Works[k]
