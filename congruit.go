@@ -52,13 +52,10 @@ func HelloServer(w http.ResponseWriter, req *http.Request, t string, StockRoomDi
 			}
 
 		}
-		works_ptr := []*congruit.Work{}
-		workplaces_ptr := []*congruit.WorkPlace{}
-		places_ptr := []*congruit.Place{}
 
-		places_ptr, works_ptr, workplaces_ptr = congruit.LoadStockroom(StockRoomDir, Debug)
+		places, works, workplaces := congruit.LoadStockroom(StockRoomDir, Debug)
 
-		ExecutedWorks = congruit.ExecuteStockroom(Debug, places_ptr, works_ptr, workplaces_ptr)
+		ExecutedWorks = congruit.ExecuteStockroom(Debug, places, works, workplaces)
 		w.Write([]byte("\n Remote executed works: " + strconv.Itoa(ExecutedWorks) + "\n"))
 		return ExecutedWorks
 
@@ -114,10 +111,6 @@ func main() {
 		}
 	}
 
-	works_ptr := []*congruit.Work{}
-	workplaces_ptr := []*congruit.WorkPlace{}
-	places_ptr := []*congruit.Place{}
-
 	if *Friend {
 
 		http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
@@ -131,9 +124,9 @@ func main() {
 
 	}
 
-	places_ptr, works_ptr, workplaces_ptr = congruit.LoadStockroom(*StockRoomDir, *Debug)
+	places, works, workplaces := congruit.LoadStockroom(*StockRoomDir, *Debug)
 
-	ExecutedWorks = congruit.ExecuteStockroom(*Debug, places_ptr, works_ptr, workplaces_ptr)
+	ExecutedWorks = congruit.ExecuteStockroom(*Debug, places, works, workplaces)
 
 	log.Printf("Extecuted works: " + strconv.Itoa(ExecutedWorks))
 
@@ -143,7 +136,7 @@ func main() {
 
 		time.Sleep(5000 * time.Millisecond)
 
-		ExecutedWorks = congruit.ExecuteStockroom(*Debug, places_ptr, works_ptr, workplaces_ptr)
+		ExecutedWorks = congruit.ExecuteStockroom(*Debug, places, works, workplaces)
 
 		log.Printf("Extecuted works: " + strconv.Itoa(ExecutedWorks))
 	}

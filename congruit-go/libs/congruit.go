@@ -33,7 +33,7 @@ type WorkPlace struct {
 	Places []string
 }
 
-func ExecuteStockroom(Debug bool, places_ptr []*Place, works_ptr []*Work, workplaces_ptr []*WorkPlace) int {
+func ExecuteStockroom(Debug bool, places []Place, works []Work, workplaces []WorkPlace) int {
 
 	var goodplace bool
 
@@ -41,10 +41,10 @@ func ExecuteStockroom(Debug bool, places_ptr []*Place, works_ptr []*Work, workpl
 
 	ExecutedWorks := 0
 
-	for i := range workplaces_ptr {
+	for i := range workplaces {
 
 		goodplace = true
-		workplace := workplaces_ptr[i]
+		workplace := workplaces[i]
 		log.Printf("Processing workplace " + workplace.Name)
 
 		log.Printf("Checking places of workplace " + workplace.Name)
@@ -55,9 +55,9 @@ func ExecuteStockroom(Debug bool, places_ptr []*Place, works_ptr []*Work, workpl
 			log.Printf("Testing place " + z)
 			place_name := ""
 
-			for p := range places_ptr {
+			for p := range places {
 
-				place := places_ptr[p]
+				place := places[p]
 
 				if strings.EqualFold(z, place.Name) {
 					command = place.Command
@@ -96,9 +96,9 @@ func ExecuteStockroom(Debug bool, places_ptr []*Place, works_ptr []*Work, workpl
 			for k := range workplace.Works {
 				j := workplace.Works[k]
 
-				for w := range works_ptr {
+				for w := range works {
 
-					work := works_ptr[w]
+					work := works[w]
 
 					if strings.EqualFold(j, work.Name) {
 						command = work.Command
@@ -136,51 +136,47 @@ func ExecuteStockroom(Debug bool, places_ptr []*Place, works_ptr []*Work, workpl
 	return ExecutedWorks
 }
 
-func LoadStockroom(StockRoomDir string, Debug bool) ([]*Place, []*Work, []*WorkPlace) {
+func LoadStockroom(StockRoomDir string, Debug bool) ([]Place, []Work, []WorkPlace) {
 
 	log.Printf("Loading works...")
 
-	places_ptr := []*Place{}
-	works_ptr := []*Work{}
-	workplaces_ptr := []*WorkPlace{}
+	places := make([]Place, 0)
+        works := make([]Work, 0)
+        workplaces := make([]WorkPlace, 0)
 
-	works, _ := ioutil.ReadDir(StockRoomDir + "/works")
-	workplaces, _ := ioutil.ReadDir(StockRoomDir + "/workplaces_enabled")
-	places, _ := ioutil.ReadDir(StockRoomDir + "/places")
+	raw_works, _ := ioutil.ReadDir(StockRoomDir + "/works")
+	raw_workplaces, _ := ioutil.ReadDir(StockRoomDir + "/workplaces_enabled")
+	raw_places, _ := ioutil.ReadDir(StockRoomDir + "/places")
 
-	for _, w := range works {
+	for _, w := range raw_works {
 
 		if Debug {
 			log.Printf("Found work: " + w.Name())
 		}
 
-		thiswork := new(Work)
-		thiswork.Name = w.Name()
 		content, _ := ioutil.ReadFile(StockRoomDir + "/works/" + w.Name())
-		thiswork.Command = string(content)
+		thiswork := Work{Name: w.Name(), Command: string(content)}
 		if Debug {
 			log.Printf("Load work: " + thiswork.Name)
 		}
-		works_ptr = append(works_ptr, thiswork)
+		works = append(works, thiswork)
 	}
 
-	for _, p := range places {
+	for _, p := range raw_places {
 
 		if Debug {
 			log.Printf("Found place: " + p.Name())
 		}
-		thisplace := new(Place)
-		thisplace.Name = p.Name()
 		content, _ := ioutil.ReadFile(StockRoomDir + "/places/" + p.Name())
-		thisplace.Command = string(content)
+		thisplace := Place{Name: p.Name(), Command: string(content)}
 		if Debug {
 			log.Printf("Load Place: " + thisplace.Name)
 		}
-		places_ptr = append(places_ptr, thisplace)
+		places = append(places, thisplace)
 
 	}
 
-	for _, wp := range workplaces {
+	for _, wp := range raw_workplaces {
 
 		if strings.EqualFold(wp.Name(), "README.md") == false {
 			if Debug {
@@ -206,18 +202,16 @@ func LoadStockroom(StockRoomDir string, Debug bool) ([]*Place, []*Work, []*WorkP
 					log.Fatal(err)
 				}
 
-				thisworkplace := new(WorkPlace)
-				thisworkplace.Name = wp.Name() + "@" + strconv.Itoa(cnt)
-				thisworkplace.Works = configuration.Works
-				thisworkplace.Places = configuration.Places
+				thisworkplace := WorkPlace{Name: wp.Name() + "@" + strconv.Itoa(cnt), Works: configuration.Works,
+                                   Places: configuration.Places}
 				log.Printf("Loading workplace: " + wp.Name() + "@" + strconv.Itoa(cnt))
-				workplaces_ptr = append(workplaces_ptr, thisworkplace)
+				workplaces = append(workplaces, thisworkplace)
 				cnt = cnt + 1
 			}
 		}
 	}
 
-	return places_ptr, works_ptr, workplaces_ptr
+	return places, works, workplaces
 
 }
 
