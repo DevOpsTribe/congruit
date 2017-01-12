@@ -4,11 +4,11 @@
 
 ### Watch Congruit in action
 
-[Jenkins job - Test workplace](http://jenkins.congruit.io:8080/job/congruit-develop/)
+[Jenkins job - Test workplace](http://jenkins.congruit.io/job/congruit-develop/)
 
-[Jenkins job for controlling Docker](http://jenkins.congruit.io:8080/job/congruit-develop-docker/)
+[Jenkins job for controlling Docker](http://jenkins.congruit.io/job/congruit-develop-docker/)
 
-[Jenkins job for installing Screen](http://jenkins.congruit.io:8080/job/congruit-develop-install-screen/)
+[Jenkins job for installing Screen](http://jenkins.congruit.io/job/congruit-develop-install-screen/)
 
 ### Contribution
 
