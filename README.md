@@ -231,7 +231,7 @@ curl https://192.168.50.5:8443/hello  --header "Token:foobar" --header "Workplac
 ```
 
 ## Build your workplace
-1. Create your stockroom. I would like create a public repository with common and useful workplaces. For now you can take a look at https://github.com/lucky-sideburn/congruit/tree/master/stockroom
+1. Create your stockroom. I would like create a public repository with common and useful workplaces. For now you can take a look at https://github.com/Congruit/example-stockroom
 
 2. You need to describe your places. Example:
   * is this server running a specific Linux distribution?
