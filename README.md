@@ -4,11 +4,11 @@
 
 ### Watch Congruit in action
 
-[Jenkins job - Test workplace](http://jenkins.congruit.io:8080/job/congruit-develop/)
+[Jenkins job - Test workplace](http://jenkins.congruit.io/job/congruit-develop/)
 
-[Jenkins job for controlling Docker](http://jenkins.congruit.io:8080/job/congruit-develop-docker/)
+[Jenkins job for controlling Docker](http://jenkins.congruit.io/job/congruit-develop-docker/)
 
-[Jenkins job for installing Screen](http://jenkins.congruit.io:8080/job/congruit-develop-install-screen/)
+[Jenkins job for installing Screen](http://jenkins.congruit.io/job/congruit-develop-install-screen/)
 
 ### Contribution
 
@@ -231,7 +231,7 @@ curl https://192.168.50.5:8443/hello  --header "Token:foobar" --header "Workplac
 ```
 
 ## Build your workplace
-1. Create your stockroom. I would like create a public repository with common and useful workplaces. For now you can take a look at https://github.com/lucky-sideburn/congruit/tree/master/stockroom
+1. Create your stockroom. I would like create a public repository with common and useful workplaces. For now you can take a look at https://github.com/Congruit/example-stockroom
 
 2. You need to describe your places. Example:
   * is this server running a specific Linux distribution?
