@@ -1,4 +1,4 @@
-![alt text](https://github.com/Congruit/congruit/blob/master/img/logo4.png "Tux2")
+![alt text](https://github.com/Congruit/congruit/blob/master/img/congruit.png "Tux2")
 ### The configuration management tool that loves Bash
 #### Simple, lightweight and fully customizable by you
 
