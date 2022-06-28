@@ -383,7 +383,7 @@ Example of Vagrant's output:
 
 ## Usage
 1. `git clone https://github.com/Congruit/congruit.git`
-2. `go build conguit.go`
+2. `go build congruit.go`
 
 3. Start Congruit
 
