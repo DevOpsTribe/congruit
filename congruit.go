@@ -1,10 +1,10 @@
 package main
 
 import (
-	"./congruit-go/libs"
 	"flag"
 	"fmt"
 	"log"
+	congruit "main/congruit-go/libs"
 	"net/http"
 	"os"
 	"strconv"
@@ -100,6 +100,8 @@ func main() {
 	}
 
 	wp := strings.Split(*WorkPlaces, ",")
+
+	os.Mkdir(*StockRoomDir+"/workplaces_enabled/", 0755)
 
 	for w := range wp {
 		_, err := os.Stat(*StockRoomDir + "/workplaces_enabled/" + wp[w])
