@@ -89,7 +89,7 @@ func main() {
 	fmt.Printf("|  _| . |   | . |  _| | | |  _|\n")
 	fmt.Printf("|___|___|_|_|_  |_| |___|_|_|  \n")
 	fmt.Printf("            |___|              \n")
-	fmt.Println("Version:", version, "\n")
+	fmt.Println("Version:", version)
 
 	if *CongruitVersion {
 		return
@@ -130,7 +130,7 @@ func main() {
 
 	ExecutedWorks = congruit.ExecuteStockroom(*Debug, places, works, workplaces)
 
-	log.Printf("Extecuted works: " + strconv.Itoa(ExecutedWorks))
+	log.Printf("Executed works: " + strconv.Itoa(ExecutedWorks))
 
 	for *Supervisor {
 
