@@ -140,7 +140,7 @@ func main() {
 
 		ExecutedWorks = congruit.ExecuteStockroom(*Debug, places, works, workplaces)
 
-		log.Printf("Extecuted works: " + strconv.Itoa(ExecutedWorks))
+		log.Printf("Executed works: " + strconv.Itoa(ExecutedWorks))
 	}
 
 }
