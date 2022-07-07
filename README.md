@@ -1,18 +1,17 @@
 ![alt text](https://github.com/Congruit/congruit/blob/master/img/congruit.png "Tux2")
 ### The configuration management tool that loves Bash
-#### Simple, lightweight and fully customizable by you
+#### Simple, lightweight and fully customizable
 
 ### Contribution
 
 If you find this project interesting, feel free to contribute with pull requests.
-We are happy to receive commits for the GO engine or some Bash stockrooms!
-
-contact me (eugenio.marzo@yahoo.it) for any further information!
-
+We are happy to receive commits for the GO engine or some Bash stockrooms.
 
 ### Table of Contents
 
 **[Description](#description)**
+
+**[Build](#build)**
 
 **[Quick Examples](#quick-examples)**
 
@@ -38,17 +37,26 @@ contact me (eugenio.marzo@yahoo.it) for any further information!
 
 **[Try Congruit With Vagrant](#try-congruit-with-vagrant)**
 
-**[Usage](#usage)**
-
 ## Description
 
 Congruit is a lightweight configuration management and automation tool. It is written in Go but works through Bash. It manages shell scripts you created to configure your Linux platforms.
+
+## Build
+1. `git clone https://github.com/Congruit/congruit.git`
+
+2. `go build congruit.go`
+
+3. Start Congruit
+
+`./congruit  -stockroom-dir=./stockroom`
+
+`./congruit  -stockroom-dir=./stockroom -debug`
 
 ## Quick Examples
 
 * Do worksplace test
 ```
-eugenio@local:[~/WORK/GO/src/congruit]: ./congruit -gitrepo https://github.com/Congruit/example-stockroom.git -workplaces test
+luckysideburn@local:[~/WORK/GO/src/congruit]: ./congruit -gitrepo https://github.com/Congruit/example-stockroom.git -workplaces test
                          _ _
  ___ ___ ___ ___ ___ _ _|_| |_
 |  _| . |   | . |  _| | | |  _|
@@ -380,14 +388,3 @@ Example of Vagrant's output:
 ==> Centos7: 2017/01/03 09:02:04 Workplace install_screen@3 not needed here!
 ==> Centos7: 2017/01/03 09:02:04 Extecuted works: 1
 ```
-
-## Usage
-1. `git clone https://github.com/Congruit/congruit.git`
-2. `go build congruit.go`
-
-3. Start Congruit
-
-`./congruit  -stockroom-dir=./stockroom`
-
-`./congruit  -stockroom-dir=./stockroom -debug`
-
