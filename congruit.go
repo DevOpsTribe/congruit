@@ -1,10 +1,10 @@
 package main
 
 import (
-	"./congruit-go/libs"
 	"flag"
 	"fmt"
 	"log"
+	congruit "main/congruit-go/libs"
 	"net/http"
 	"os"
 	"strconv"
@@ -89,7 +89,7 @@ func main() {
 	fmt.Printf("|  _| . |   | . |  _| | | |  _|\n")
 	fmt.Printf("|___|___|_|_|_  |_| |___|_|_|  \n")
 	fmt.Printf("            |___|              \n")
-	fmt.Println("Version:", version, "\n")
+	fmt.Println("Version:", version)
 
 	if *CongruitVersion {
 		return
@@ -100,6 +100,8 @@ func main() {
 	}
 
 	wp := strings.Split(*WorkPlaces, ",")
+
+	os.Mkdir(*StockRoomDir+"/workplaces_enabled/", 0755)
 
 	for w := range wp {
 		_, err := os.Stat(*StockRoomDir + "/workplaces_enabled/" + wp[w])
@@ -128,7 +130,7 @@ func main() {
 
 	ExecutedWorks = congruit.ExecuteStockroom(*Debug, places, works, workplaces)
 
-	log.Printf("Extecuted works: " + strconv.Itoa(ExecutedWorks))
+	log.Printf("Executed works: " + strconv.Itoa(ExecutedWorks))
 
 	for *Supervisor {
 
@@ -138,7 +140,7 @@ func main() {
 
 		ExecutedWorks = congruit.ExecuteStockroom(*Debug, places, works, workplaces)
 
-		log.Printf("Extecuted works: " + strconv.Itoa(ExecutedWorks))
+		log.Printf("Executed works: " + strconv.Itoa(ExecutedWorks))
 	}
 
 }
