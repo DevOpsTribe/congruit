@@ -84,14 +84,14 @@ func ExecuteStockroom(Debug bool, places []Place, works []Work, workplaces []Wor
 
 			log.Printf("Place " + place_name + " returns 0")
 
-			if Debug {
-				//log.Printf("\n\n output of \n" + command + "\n is " + out.String() + "\n\n")
-			}
+			//if Debug {
+			//log.Printf("\n\n output of \n" + command + "\n is " + out.String() + "\n\n")
+			//}
 		}
 
 		command = ""
 
-		if goodplace == true {
+		if goodplace {
 
 			for k := range workplace.Works {
 				j := workplace.Works[k]
@@ -113,13 +113,13 @@ func ExecuteStockroom(Debug bool, places []Place, works []Work, workplaces []Wor
 				cmd := exec.Command("bash", "-c", command)
 				var out bytes.Buffer
 				cmd.Stdout = &out
-				err := cmd.Run()
+				//err := cmd.Run()
 
 				ExecutedWorks = ExecutedWorks + 1
 
-				if err != nil {
+				//if err != nil {
 
-				}
+				//}
 				if len(out.String()) > 0 {
 					log.Printf("command output: " + out.String() + "\n")
 				}
@@ -136,16 +136,16 @@ func ExecuteStockroom(Debug bool, places []Place, works []Work, workplaces []Wor
 	return ExecutedWorks
 }
 
-func LoadStockroom(StockRoomDir string, Debug bool) ([]Place, []Work, []WorkPlace) {
+func LoadStockroom(StockRoomDir string, Debug bool, workplaces_enabled string) ([]Place, []Work, []WorkPlace) {
 
 	log.Printf("Loading works...")
 
 	places := make([]Place, 0)
-        works := make([]Work, 0)
-        workplaces := make([]WorkPlace, 0)
+	works := make([]Work, 0)
+	workplaces := make([]WorkPlace, 0)
 
 	raw_works, _ := ioutil.ReadDir(StockRoomDir + "/works")
-	raw_workplaces, _ := ioutil.ReadDir(StockRoomDir + "/workplaces_enabled")
+	raw_workplaces, _ := ioutil.ReadDir(StockRoomDir + workplaces_enabled)
 	raw_places, _ := ioutil.ReadDir(StockRoomDir + "/places")
 
 	for _, w := range raw_works {
@@ -178,12 +178,12 @@ func LoadStockroom(StockRoomDir string, Debug bool) ([]Place, []Work, []WorkPlac
 
 	for _, wp := range raw_workplaces {
 
-		if strings.EqualFold(wp.Name(), "README.md") == false {
+		if !strings.EqualFold(wp.Name(), "README.md") {
 			if Debug {
 				log.Printf("Found workplace: " + wp.Name())
 			}
 
-			file, _ := os.Open(StockRoomDir + "/workplaces_enabled/" + wp.Name())
+			file, _ := os.Open(StockRoomDir + workplaces_enabled + wp.Name())
 			decoder := json.NewDecoder(file)
 
 			_, err := decoder.Token()
@@ -203,7 +203,7 @@ func LoadStockroom(StockRoomDir string, Debug bool) ([]Place, []Work, []WorkPlac
 				}
 
 				thisworkplace := WorkPlace{Name: wp.Name() + "@" + strconv.Itoa(cnt), Works: configuration.Works,
-                                   Places: configuration.Places}
+					Places: configuration.Places}
 				log.Printf("Loading workplace: " + wp.Name() + "@" + strconv.Itoa(cnt))
 				workplaces = append(workplaces, thisworkplace)
 				cnt = cnt + 1
@@ -215,9 +215,9 @@ func LoadStockroom(StockRoomDir string, Debug bool) ([]Place, []Work, []WorkPlac
 
 }
 
-func CloneRepo (GitRepo string) string {
+func CloneRepo(GitRepo string) string {
 
-  StockRoomDir := ""
+	StockRoomDir := ""
 
 	if _, err := os.Stat("/tmp/stockroom"); err == nil {
 		os.RemoveAll("/tmp/stockroom")
@@ -236,5 +236,5 @@ func CloneRepo (GitRepo string) string {
 	}
 
 	StockRoomDir = "/tmp/stockroom"
-  return StockRoomDir
+	return StockRoomDir
 }
