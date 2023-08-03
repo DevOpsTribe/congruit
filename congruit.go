@@ -12,6 +12,8 @@ import (
 	"time"
 )
 
+const workplaces_enabled string = "/workplaces_enabled/"
+
 func HelloServer(w http.ResponseWriter, req *http.Request, t string, StockRoomDir string, Debug bool, GitRepo string) int {
 
 	if len(GitRepo) > 0 {
@@ -30,9 +32,9 @@ func HelloServer(w http.ResponseWriter, req *http.Request, t string, StockRoomDi
 
 		for w := range wp {
 			log.Println("A remote agent asks to run " + wp[w])
-			_, err := os.Stat(StockRoomDir + "/workplaces_enabled/" + wp[w])
+			_, err := os.Stat(StockRoomDir + workplaces_enabled + wp[w])
 			if err != nil {
-				err := os.Link(StockRoomDir+"/workplaces/"+wp[w], StockRoomDir+"/workplaces_enabled/"+wp[w])
+				err := os.Link(StockRoomDir+"/workplaces/"+wp[w], StockRoomDir+workplaces_enabled+wp[w])
 				if err != nil {
 					log.Fatal(err)
 				}
@@ -42,10 +44,10 @@ func HelloServer(w http.ResponseWriter, req *http.Request, t string, StockRoomDi
 		if len(req.Header.Get("Workplace")) > 0 {
 
 			log.Println("A remote agent asks to run " + req.Header.Get("Workplace"))
-			_, err := os.Stat(StockRoomDir + "/workplaces_enabled/" + req.Header.Get("Workplace"))
+			_, err := os.Stat(StockRoomDir + workplaces_enabled + req.Header.Get("Workplace"))
 
 			if err != nil {
-				err := os.Link(StockRoomDir+"/workplaces/"+req.Header.Get("Workplace"), StockRoomDir+"/workplaces_enabled/"+req.Header.Get("Workplace"))
+				err := os.Link(StockRoomDir+"/workplaces/"+req.Header.Get("Workplace"), StockRoomDir+workplaces_enabled+req.Header.Get("Workplace"))
 				if err != nil {
 					log.Fatal("Error in enabling workplace!")
 				}
@@ -53,7 +55,7 @@ func HelloServer(w http.ResponseWriter, req *http.Request, t string, StockRoomDi
 
 		}
 
-		places, works, workplaces := congruit.LoadStockroom(StockRoomDir, Debug)
+		places, works, workplaces := congruit.LoadStockroom(StockRoomDir, Debug, workplaces_enabled)
 
 		ExecutedWorks = congruit.ExecuteStockroom(Debug, places, works, workplaces)
 		w.Write([]byte("\n Remote executed works: " + strconv.Itoa(ExecutedWorks) + "\n"))
@@ -101,12 +103,12 @@ func main() {
 
 	wp := strings.Split(*WorkPlaces, ",")
 
-	os.Mkdir(*StockRoomDir+"/workplaces_enabled/", 0755)
+	os.Mkdir(*StockRoomDir+workplaces_enabled, 0755)
 
 	for w := range wp {
-		_, err := os.Stat(*StockRoomDir + "/workplaces_enabled/" + wp[w])
+		_, err := os.Stat(*StockRoomDir + workplaces_enabled + wp[w])
 		if err != nil {
-			err := os.Link(*StockRoomDir+"/workplaces/"+wp[w], *StockRoomDir+"/workplaces_enabled/"+wp[w])
+			err := os.Link(*StockRoomDir+"/workplaces/"+wp[w], *StockRoomDir+workplaces_enabled+wp[w])
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -126,7 +128,7 @@ func main() {
 
 	}
 
-	places, works, workplaces := congruit.LoadStockroom(*StockRoomDir, *Debug)
+	places, works, workplaces := congruit.LoadStockroom(*StockRoomDir, *Debug, workplaces_enabled)
 
 	ExecutedWorks = congruit.ExecuteStockroom(*Debug, places, works, workplaces)
 
